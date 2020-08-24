@@ -1,5 +1,29 @@
 export class Viewer {
-  constructor() {}
-  
-  init() {}
+
+	_animationAction = undefined;
+
+	constructor() {
+	}
+
+	init() {
+
+	}
+
+	setAnimationAction() {
+	}
+
+	removeAnimationAction() {
+	}
+
+	animate() {
+	}
+
+	stopAnimation() {
+	}
+
+	drawObject() {
+	}
+
+	removeObject() {
+	}
 }
