@@ -1,5 +1,7 @@
 class Engine {
 
+  enemyStore = [];
+
   /**
     @constructor
     throw here dependencies
@@ -14,7 +16,7 @@ class Engine {
   }
   
   /**
-   * @method generateEnemies - check amount of existig enemies and genetares new, some of them may have special effect
+   * @method generateEnemies - check amount of existing enemies and generates new, some of them may have special effect
   */
   generateEnemies() {}
   
@@ -23,7 +25,7 @@ class Engine {
   
   produceSpecialEnemyEffect() {}
 
-  // say to viewer that we shoud start make some actions
+  // say to viewer that we should start make some actions
   start() {
     this.viewer.setAnimationAction(() => {
       this.updateExistingEnemiesPosition();
@@ -35,20 +37,21 @@ class Engine {
   pause() {
     this.viewer.stopAnimation();
   }
-
-  stop() {}
   
   onShot(enemyId) {
-    if (!this.someStore[enemyId].specialEffecrProduced) {
+    if (!this.enemyStore[enemyId].specialEffecrProduced) {
       this.produceSpecialEnemyEffect(enemyId);
     } else {
-      destroyEnemy(enemyId);
+      this.destroyEnemy(enemyId);
     }
   }
 
-  onDead() {}
-
-  gameOver() {}
+  gameOver() {
+    this.viewer.stopAnimation();
+    this.viewer.removeAnimationAction();
+  }
   
   restart() {}
+
+  destroyEnemy() {}
 }
