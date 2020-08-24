@@ -1,18 +1,29 @@
 export class Viewer {
 
-  constructor() {}
-  
-  init() {}
+	_animationAction = undefined;
 
-  setAnimationAction() {}
+	constructor() {
+	}
 
-  removeAnimationAction() {}
+	init() {
 
-  animate() {}
+	}
 
-  stopAnimation() {}
+	setAnimationAction() {
+	}
 
-  drawObject() {}
+	removeAnimationAction() {
+	}
 
-  removeObject() {}
+	animate() {
+	}
+
+	stopAnimation() {
+	}
+
+	drawObject() {
+	}
+
+	removeObject() {
+	}
 }

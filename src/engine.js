@@ -1,57 +1,56 @@
 class Engine {
 
-  enemyStore = [];
+	enemyStore = [];
 
-  /**
-    @constructor
-    throw here dependencies
-  */
-  constructor(viewer, controls) {
-    this.viewer = viewer;
-    this.controls = controls;
-  }
+	/**
+	 * @constructor throw dependencies here
+	 * @param viewer
+	 * @param controls
+	 */
+	constructor(viewer, controls) {
+		this.viewer = viewer;
+		this.controls = controls;
+	}
 
-  init() {
-    // init subscriptions on user actions
-  }
-  
-  /**
-   * @method generateEnemies - check amount of existing enemies and generates new, some of them may have special effect
-  */
-  generateEnemies() {}
-  
-  
-  updateExistingEnemiesPosition() {}
-  
-  produceSpecialEnemyEffect() {}
+	init() {
+		// init subscriptions on user actions
+	}
 
-  // say to viewer that we should start make some actions
-  start() {
-    this.viewer.setAnimationAction(() => {
-      this.updateExistingEnemiesPosition();
-      this.generateEnemies();
-    });
-    this.viewer.animate();
-  }
+	/**
+	 * @method generateEnemies - check amount of existing enemies and generates new, some of them may have special effect
+	 */
+	generateEnemies() {
+	}
 
-  pause() {
-    this.viewer.stopAnimation();
-  }
-  
-  onShot(enemyId) {
-    if (!this.enemyStore[enemyId].specialEffecrProduced) {
-      this.produceSpecialEnemyEffect(enemyId);
-    } else {
-      this.destroyEnemy(enemyId);
-    }
-  }
 
-  gameOver() {
-    this.viewer.stopAnimation();
-    this.viewer.removeAnimationAction();
-  }
-  
-  restart() {}
+	updateExistingEnemiesPosition() {
+	}
 
-  destroyEnemy() {}
+	// say to viewer that we should start make some actions
+	start() {
+		this.viewer.setAnimationAction(() => {
+			this.updateExistingEnemiesPosition();
+			this.generateEnemies();
+		});
+		this.viewer.animate();
+	}
+
+	pause() {
+		this.viewer.stopAnimation();
+	}
+
+	onShot(enemyId) {
+		this.destroyEnemy(enemyId);
+	}
+
+	gameOver() {
+		this.viewer.stopAnimation();
+		this.viewer.removeAnimationAction();
+	}
+
+	restart() {
+	}
+
+	destroyEnemy() {
+	}
 }
