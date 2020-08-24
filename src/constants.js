@@ -3,4 +3,4 @@ const GAME_EVENT_MAP = {
 	'aim': ['mousemove', 'gamepad-move'],
 };
 
-const AVAILABLE_DOM_EVENTS = ['click', 'mousemove'];
+const AVAILABLE_DOM_EVENTS = ['click'];

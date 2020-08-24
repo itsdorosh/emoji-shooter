@@ -1,6 +1,8 @@
 class Engine {
 
-	enemyStore = [];
+	_enemyStore = [];
+	_pointCount = 0;
+	_onPointCountUpdateCallback;
 
 	/**
 	 * @constructor throw dependencies here
@@ -10,6 +12,8 @@ class Engine {
 	constructor(viewer, controls) {
 		this.viewer = viewer;
 		this.controls = controls;
+
+		this.init();
 	}
 
 	init() {
@@ -27,7 +31,7 @@ class Engine {
 	}
 
 	// say to viewer that we should start make some actions
-	start() {
+	play() {
 		this.viewer.setAnimationAction(() => {
 			this.updateExistingEnemiesPosition();
 			this.generateEnemies();
@@ -53,4 +57,14 @@ class Engine {
 
 	destroyEnemy() {
 	}
+
+	updatePointCount(count) {
+		this._pointCount = count;
+		this._onPointCountUpdateCallback(count);
+	}
+
+	onPointCountUpdate(callback) {
+		this._onPointCountUpdateCallback = callback;
+	}
+
 }

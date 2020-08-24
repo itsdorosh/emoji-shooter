@@ -1,14 +1,13 @@
 /**
  * @class Controls
  * @description this class provide API for interaction with several controls for example mouse or gamepad
- * you can simply subscribe
+ * you can simply subscribe on some of AVAILABLE_DOM_EVENTS
  */
 class Controls {
 	rootObject;
 
 	constructor() {
 		this.eventStorage = {};
-		this.init();
 	}
 
 	/**

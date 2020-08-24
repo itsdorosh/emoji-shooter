@@ -1,0 +1,48 @@
+html,
+body {
+	min-height: 100%;
+	height: 100%
+}
+body {
+	margin: 0;
+}
+
+button {
+	width: 90px;
+}
+
+#canvasContainer {
+	height: 100%;
+}
+
+#gameButtons {
+	width: 100vw;
+	height: 100vh;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+	background: rgba(105, 163, 233, 0.6);
+}
+
+#gameButtons button {
+	margin-bottom: 10px;
+}
+
+#inGameButtons {
+	width: 100vw;
+	height: 10vh;
+	display: flex;
+	align-items: center;
+	justify-content: space-around;
+	flex-direction: row;
+	background: antiquewhite;
+}
+
+.position-absolute {
+	position: absolute;
+}
+
+.hide {
+	display: none !important;
+}
