@@ -38,7 +38,13 @@
 
 	engine.onPointCountUpdate((count) => {
 		document.getElementById('pointsCount').innerText = `Count: ${count}`;
-		console.log(document.getElementById('pointsCount'));
+	});
+
+	engine.onGameOver(() => {
+		document.getElementById('gameButtons').classList.remove('hide');
+		document.getElementById('greetingCaption').classList.add('hide');
+		document.getElementById('playButton').classList.add('hide');
+		document.getElementById('restartButton').classList.remove('hide');
 	});
 
 	const playButton = document.getElementById('playButton');
@@ -57,6 +63,8 @@
 
 	const restartButton = document.getElementById('restartButton');
 	restartButton.addEventListener('click', () => {
+		document.getElementById('greetingCaption').classList.add('hide');
+		document.getElementById('gameOverCaption').classList.remove('hide');
 		document.getElementById('gameButtons').classList.add('hide');
 		engine.restart();
 	});

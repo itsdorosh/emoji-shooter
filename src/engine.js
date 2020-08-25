@@ -3,6 +3,7 @@ class Engine {
 	_enemyStore = [];
 	_pointCount = 0;
 	_onPointCountUpdateCallback;
+	_onGameOverCallback;
 
 	/**
 	 * @constructor throw dependencies here
@@ -18,6 +19,7 @@ class Engine {
 
 	init() {
 		// init subscriptions on user actions
+		// here we should map game events to the DOM events and subscribe
 	}
 
 	/**
@@ -30,7 +32,6 @@ class Engine {
 	updateExistingEnemiesPosition() {
 	}
 
-	// say to viewer that we should start make some actions
 	play() {
 		this.viewer.setAnimationAction(() => {
 			this.updateExistingEnemiesPosition();
@@ -50,6 +51,7 @@ class Engine {
 	gameOver() {
 		this.viewer.stopAnimation();
 		this.viewer.removeAnimationAction();
+		this._onGameOverCallback();
 	}
 
 	restart() {
@@ -65,6 +67,10 @@ class Engine {
 
 	onPointCountUpdate(callback) {
 		this._onPointCountUpdateCallback = callback;
+	}
+
+	onGameOver(callback) {
+		this._onGameOverCallback = callback;
 	}
 
 }

@@ -18,6 +18,8 @@ class Viewer {
 		this.renderer.setClearColor('#ffc0cb');
 		this.HTMLContainer.appendChild(this.renderer.domElement);
 
+		this.renderFrame();
+
 		window.addEventListener('resize', this.onWindowResize);
 	}
 
@@ -31,9 +33,9 @@ class Viewer {
 
 	animate() {
 		this.__animationFrameId = requestAnimationFrame(() => {
-			this.renderer.render(this.scene, this.camera);
+			if (this._animationAction) { this._animationAction(); }
+			this.renderFrame();
 			this.animate();
-			this._animationAction && this._animationAction();
 		});
 	}
 
@@ -48,6 +50,10 @@ class Viewer {
 		this.camera.updateProjectionMatrix();
 		this.renderer.setSize(this.renderer.domElement.offsetWidth, this.renderer.domElement.offsetHeight);
 		this.stopAnimation();
+	}
+
+	renderFrame() {
+		this.renderer.render(this.scene, this.camera);
 	}
 
 	drawObject() {
