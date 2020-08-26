@@ -15,11 +15,18 @@ class Viewer {
 		const { offsetWidth, offsetHeight } = this.HTMLContainer;
 		this.scene = new THREE.Scene();
 		this.camera = new THREE.PerspectiveCamera(70, offsetWidth / offsetHeight, 0.1, 1000);
+		this.camera.position.set(10, 2.5, 0);
+		this.camera.lookAt(0, 0, 0);
 		this.renderer = new THREE.WebGLRenderer({ antialias: true });
 		this.renderer.setSize(offsetWidth, offsetHeight);
 		this.renderer.setClearColor('#ffc0cb');
 		this.HTMLContainer.appendChild(this.renderer.domElement);
 		this.scene.add(this._objContainer);
+
+		const grid = new THREE.GridHelper( 100, 20, 0x000000, 0x000000 );
+		grid.material.opacity = 0.2;
+		grid.material.transparent = true;
+		this.scene.add( grid );
 
 		this.renderFrame();
 
@@ -48,7 +55,6 @@ class Viewer {
 
 	onWindowResize = () => {
 		this.animate();
-		this._animationAction();
 		this.camera.aspect = this.renderer.domElement.offsetWidth / this.renderer.domElement.offsetHeight;
 		this.camera.updateProjectionMatrix();
 		this.renderer.setSize(this.renderer.domElement.offsetWidth, this.renderer.domElement.offsetHeight);
@@ -68,6 +74,7 @@ class Viewer {
 	 * @param obj - {object with params like: type: 'text', content: 'text', }
 	 */
 	drawObject(obj) {
+		// TODO: make some method for generating random position
 		const geometry = new THREE.BoxBufferGeometry(1, 1, 1);
 		const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
 		const cube = new THREE.Mesh(geometry, material);

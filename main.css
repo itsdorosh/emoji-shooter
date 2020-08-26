@@ -22,7 +22,8 @@ button {
 	align-items: center;
 	justify-content: center;
 	flex-direction: column;
-	background: rgba(105, 163, 233, 0.6);
+	/*rebeccapurple*/
+	background: rgba(102, 51, 153, 0.6);
 }
 
 #gameButtons button {
@@ -36,7 +37,7 @@ button {
 	align-items: center;
 	justify-content: space-around;
 	flex-direction: row;
-	background: antiquewhite;
+	background: rgba(102, 51, 153, 0.6);
 }
 
 .position-absolute {
