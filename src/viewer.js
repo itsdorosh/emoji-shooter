@@ -1,10 +1,13 @@
 class Viewer {
 
+	_objContainer;
+
 	_animationFrameId;
 	_animationAction = null;
 
 	constructor(HTMLContainer) {
 		this.HTMLContainer = HTMLContainer;
+		this._objContainer = new THREE.Object3D();
 
 		this.init();
 	}
@@ -17,6 +20,7 @@ class Viewer {
 		this.renderer.setSize(offsetWidth, offsetHeight);
 		this.renderer.setClearColor('#ffc0cb');
 		this.HTMLContainer.appendChild(this.renderer.domElement);
+		this.scene.add(this._objContainer);
 
 		this.renderFrame();
 
@@ -56,9 +60,13 @@ class Viewer {
 		this.renderer.render(this.scene, this.camera);
 	}
 
-	drawObject() {
+	get objContainer() {
+		return this._objContainer;
 	}
 
-	removeObject() {
+	drawObject(obj) {
+	}
+
+	removeObject(uuid) {
 	}
 }

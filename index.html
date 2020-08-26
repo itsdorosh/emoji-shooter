@@ -22,6 +22,7 @@
 <script src="https://unpkg.com/three@0.119.1/build/three.js"></script>
 <script src="./src/constants.js"></script>
 <script src="./src/controls.js"></script>
+<script src="./src/raycaster.js"></script>
 <script src="./src/viewer.js"></script>
 <script src="./src/engine.js"></script>
 
@@ -34,7 +35,9 @@
 	controls.setRootObjectForSubscriptions(canvasContainer);
 	controls.init();
 
-	const engine = new Engine(viewer, controls);
+	const raycaster = new Raycaster();
+
+	const engine = new Engine(viewer, controls, raycaster);
 
 	engine.onPointCountUpdate((count) => {
 		document.getElementById('pointsCount').innerText = `Count: ${count}`;

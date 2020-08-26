@@ -1,6 +1,5 @@
 class Engine {
 
-	_enemyStore = [];
 	_pointCount = 0;
 	_onPointCountUpdateCallback;
 	_onGameOverCallback;
@@ -9,10 +8,12 @@ class Engine {
 	 * @constructor throw dependencies here
 	 * @param viewer
 	 * @param controls
+	 * @param raycaster
 	 */
-	constructor(viewer, controls) {
+	constructor(viewer, controls, raycaster) {
 		this.viewer = viewer;
 		this.controls = controls;
+		this.raycaster = raycaster;
 
 		this.init();
 	}
@@ -20,6 +21,10 @@ class Engine {
 	init() {
 		// init subscriptions on user actions
 		// here we should map game events to the DOM events and subscribe
+
+		this.raycaster.onIntersection((UUID) => {
+			this.onHit(UUID);
+		});
 	}
 
 	/**
@@ -27,7 +32,6 @@ class Engine {
 	 */
 	generateEnemies() {
 	}
-
 
 	updateExistingEnemiesPosition() {
 	}
@@ -44,7 +48,15 @@ class Engine {
 		this.viewer.stopAnimation();
 	}
 
-	onShot(enemyId) {
+	onShot(coordinates) {
+		this.raycaster.intersect({
+			coordinates: coordinates,
+			container: this.viewer.objContainer,
+			types: ['enemy'],
+		});
+	}
+
+	onHit(enemyId) {
 		this.destroyEnemy(enemyId);
 	}
 
@@ -55,9 +67,13 @@ class Engine {
 	}
 
 	restart() {
+		// TODO: remove all existing objects
+		// TODO: reset count
+		this.play();
 	}
 
-	destroyEnemy() {
+	destroyEnemy(enemyId) {
+		this.viewer.removeObject(enemyId);
 	}
 
 	updatePointCount(count) {
