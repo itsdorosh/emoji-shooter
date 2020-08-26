@@ -1,7 +1,6 @@
 class Viewer {
 
 	_objContainer;
-
 	_animationFrameId;
 	_animationAction = null;
 

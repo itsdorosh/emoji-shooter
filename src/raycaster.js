@@ -13,6 +13,6 @@ class Raycaster {
 	}
 
 	onIntersection(callback) {
-		this.__onIntersectionCallback = callback;
+		this._onIntersectionCallback = callback;
 	}
 }

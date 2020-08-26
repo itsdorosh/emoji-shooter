@@ -37,7 +37,7 @@ class Controls {
 	 * @param callback
 	 */
 	on(eventName, callback) {
-		if (!eventName in this.eventStorage) {
+		if (!(eventName in this.eventStorage)) {
 			this.eventStorage[eventName] = callback;
 		} else {
 			throw 'callback for this eventName already exists';

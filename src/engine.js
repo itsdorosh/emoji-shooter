@@ -3,6 +3,7 @@ class Engine {
 	_pointCount = 0;
 	_onPointCountUpdateCallback;
 	_onGameOverCallback;
+	gameEventCallbackMap;
 
 	/**
 	 * @constructor throw dependencies here
@@ -15,12 +16,21 @@ class Engine {
 		this.controls = controls;
 		this.raycaster = raycaster;
 
+		this.gameEventCallbackMap = {
+			'shot': () => this.onShot(),
+		};
+
 		this.init();
 	}
 
 	init() {
-		// init subscriptions on user actions
-		// here we should map game events to the DOM events and subscribe
+		for (let gameEvent in GAME_EVENT_MAP) {
+			GAME_EVENT_MAP[gameEvent].forEach((mappedDOMEvent) => {
+				this.controls.on(mappedDOMEvent, (event) => {
+					this.gameEventCallbackMap[gameEvent](event);
+				});
+			});
+		}
 
 		this.raycaster.onIntersection((UUID) => {
 			this.onHit(UUID);
