@@ -54,12 +54,15 @@ class Engine {
 		}
 	}
 
-	updateExistingEnemiesPosition() {
-		// TODO: if enemy cross the deadline => call this.gameOver();
+	updateExistingEnemiesPosition(enemyMeshes) {
+		enemyMeshes.forEach((enemyMesh) => {
+			enemyMesh.position.z += 0.1;
+			if (enemyMesh.position.z > DEADLINE) { this.gameOver(); }
+		});
 	}
 
 	play() {
-		this.viewer.setAnimationAction(() => this.updateExistingEnemiesPosition());
+		this.viewer.setAnimationAction((enemyMeshes) => this.updateExistingEnemiesPosition(enemyMeshes));
 		this.viewer.animate();
 		this._generateEnemiesIntervalId = setInterval(
 			() => this.generateEnemies(),

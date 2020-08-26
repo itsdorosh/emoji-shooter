@@ -15,7 +15,7 @@ class Viewer {
 		const { offsetWidth, offsetHeight } = this.HTMLContainer;
 		this.scene = new THREE.Scene();
 		this.camera = new THREE.PerspectiveCamera(70, offsetWidth / offsetHeight, 0.1, 1000);
-		this.camera.position.set(10, 1, 0);
+		this.camera.position.set(0, 1, DEADLINE + 2);
 		this.camera.lookAt(0, 2.5, 0);
 		this.renderer = new THREE.WebGLRenderer({ antialias: true });
 		this.renderer.setSize(offsetWidth, offsetHeight);
@@ -43,7 +43,7 @@ class Viewer {
 
 	animate() {
 		this.__animationFrameId = requestAnimationFrame(() => {
-			if (this._animationAction) { this._animationAction(); }
+			if (this._animationAction) { this._animationAction(this._objContainer.children); }
 			this.renderFrame();
 			this.animate();
 		});
@@ -78,6 +78,8 @@ class Viewer {
 		const geometry = new THREE.BoxBufferGeometry(1, 1, 1);
 		const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
 		const cube = new THREE.Mesh(geometry, material);
+
+		cube.position.set(this.getRandomIntInclusive(-RANGE_X, RANGE_X), 0.5, -DEADLINE);
 		this._objContainer.add(cube);
 
 		return cube.uuid;
@@ -86,5 +88,11 @@ class Viewer {
 	removeObject(uuid) {
 		const objForRemove = this._objContainer.getObjectByProperty('uuid', uuid);
 		this._objContainer.remove(objForRemove);
+	}
+
+	getRandomIntInclusive(min, max) {
+		min = Math.ceil(min);
+		max = Math.floor(max);
+		return Math.floor(Math.random() * (max - min + 1) + min); //The maximum is inclusive and the minimum is inclusive
 	}
 }
