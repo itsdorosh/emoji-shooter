@@ -36,7 +36,7 @@
 	controls.setRootObjectForSubscriptions(canvasContainer);
 	controls.init();
 
-	const raycaster = new Raycaster();
+	const raycaster = new Raycaster(viewer.camera);
 
 	const engine = new Engine(viewer, controls, raycaster);
 

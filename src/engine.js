@@ -19,7 +19,7 @@ class Engine {
 		this.raycaster = raycaster;
 
 		this.gameEventCallbackMap = {
-			'shot': () => this.onShot(),
+			'shot': ({ clientX, clientY }) => this.onShot({clientX, clientY}),
 		};
 
 		this.init();
@@ -74,7 +74,7 @@ class Engine {
 
 	onShot(coordinates) {
 		this.raycaster.intersect({
-			coordinates: coordinates,
+			coordinates,
 			container: this.viewer.objContainer,
 			types: ['enemy'],
 		});
@@ -98,10 +98,9 @@ class Engine {
 	}
 
 	destroyEnemy(enemyId) {
-		this.existingEnemies.filter(({ id, value }) => {
-			this.updatePointCount(this._pointCount += value);
-			return id !== enemyId;
-		});
+		const reward = this.existingEnemies.find(({ id }) => id === enemyId).value;
+		this.updatePointCount(this._pointCount += reward);
+		this.existingEnemies = this.existingEnemies.filter(({ id }) => id !== enemyId);
 		this.viewer.removeObject(enemyId);
 	}
 

@@ -15,8 +15,8 @@ class Viewer {
 		const { offsetWidth, offsetHeight } = this.HTMLContainer;
 		this.scene = new THREE.Scene();
 		this.camera = new THREE.PerspectiveCamera(70, offsetWidth / offsetHeight, 0.1, 1000);
-		this.camera.position.set(10, 2.5, 0);
-		this.camera.lookAt(0, 0, 0);
+		this.camera.position.set(10, 1, 0);
+		this.camera.lookAt(0, 2.5, 0);
 		this.renderer = new THREE.WebGLRenderer({ antialias: true });
 		this.renderer.setSize(offsetWidth, offsetHeight);
 		this.renderer.setClearColor('#ffc0cb');
@@ -78,11 +78,13 @@ class Viewer {
 		const geometry = new THREE.BoxBufferGeometry(1, 1, 1);
 		const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
 		const cube = new THREE.Mesh(geometry, material);
-		this.scene.add(cube);
+		this._objContainer.add(cube);
 
 		return cube.uuid;
 	}
 
 	removeObject(uuid) {
+		const objForRemove = this._objContainer.getObjectByProperty('uuid', uuid);
+		this._objContainer.remove(objForRemove);
 	}
 }
