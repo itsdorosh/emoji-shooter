@@ -63,7 +63,17 @@ class Viewer {
 		return this._objContainer;
 	}
 
+	/**
+	 * @method drawObject
+	 * @param obj - {object with params like: type: 'text', content: 'text', }
+	 */
 	drawObject(obj) {
+		const geometry = new THREE.BoxBufferGeometry(1, 1, 1);
+		const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
+		const cube = new THREE.Mesh(geometry, material);
+		this.scene.add(cube);
+
+		return cube.uuid;
 	}
 
 	removeObject(uuid) {
