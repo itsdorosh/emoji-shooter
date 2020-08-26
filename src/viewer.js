@@ -90,6 +90,12 @@ class Viewer {
 		this._objContainer.remove(objForRemove);
 	}
 
+	removeAllObjects() {
+		while(this._objContainer.children.length > 0){
+			this._objContainer.remove(this._objContainer.children[0]);
+		}
+	}
+
 	getRandomIntInclusive(min, max) {
 		min = Math.ceil(min);
 		max = Math.floor(max);

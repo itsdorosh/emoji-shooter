@@ -95,6 +95,7 @@ class Engine {
 	}
 
 	restart() {
+		this.viewer.removeAllObjects();
 		this.existingEnemies.length = 0;
 		this._pointCount = 0;
 		this.play();
