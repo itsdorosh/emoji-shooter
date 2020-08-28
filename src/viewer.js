@@ -49,7 +49,6 @@ class Viewer {
 		});
 	}
 
-	// FIXME: doesn't work properly
 	onWindowResize = () => {
 		this.camera.aspect = this.HTMLContainer.offsetWidth / this.HTMLContainer.offsetHeight;
 		this.camera.updateProjectionMatrix();
