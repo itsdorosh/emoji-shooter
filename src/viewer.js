@@ -75,14 +75,47 @@ class Viewer {
 	 * @param obj - {object with params like: type: 'text', content: 'text', }
 	 */
 	drawObject(obj) {
-		const geometry = new THREE.BoxBufferGeometry(1, 1, 1);
-		const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
-		const cube = new THREE.Mesh(geometry, material);
+		const enemy = this._makeEmojiSprite(obj.look, .3);
 
-		cube.position.set(this.getRandomIntInclusive(-RANGE_X, RANGE_X), 0.5, -DEADLINE);
-		this._objContainer.add(cube);
+		enemy.position.set(this.getRandomIntInclusive(-RANGE_X, RANGE_X), 0.5, -DEADLINE);
+		this._objContainer.add(enemy);
 
-		return cube.uuid;
+		return enemy.uuid;
+	}
+
+	_makeEmojiSprite(message, emojiSize = 2.5) {
+		let url = window.location.search.substring(1);
+		let emojiwidth = new URLSearchParams(url).get("emojiWidth")
+			? new URLSearchParams(url).get("emojiWidth")
+			: 80;
+		let fontface = "Arial";
+		let fontsize = emojiwidth * 0.75;
+
+		let canvas = document.createElement("canvas");
+		canvas.width = emojiwidth;
+		canvas.height = emojiwidth;
+		let context = canvas.getContext("2d");
+		context.font = `Bold ${fontsize}px ${fontface}`;
+		context.font = `Bold ${fontsize}px ${fontface}`;
+		context.lineWidth = 1;
+		context.fillText(message, -2, fontsize - 3);
+
+		let texture = new THREE.Texture(canvas);
+		texture.needsUpdate = true;
+
+		let spriteMaterial = new THREE.SpriteMaterial({
+			map: texture,
+			transparent: false,
+			alphaTest: 0.5
+		});
+
+		let sprite = new THREE.Sprite(spriteMaterial);
+		sprite.scale.set(
+			emojiSize * 0.5 * fontsize,
+			emojiSize * 0.45 * fontsize,
+			0.25 * fontsize
+		);
+		return sprite;
 	}
 
 	removeObject(uuid) {

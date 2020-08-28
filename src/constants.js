@@ -11,4 +11,4 @@ const GENERATE_ENEMIES_INTERVAL_TIME = 350;
 
 const DEADLINE = 10;
 
-const RANGE_X = 2.5;
+const RANGE_X = 10;
