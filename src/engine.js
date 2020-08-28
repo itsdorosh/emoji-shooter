@@ -6,6 +6,7 @@ class Engine {
 	_generateEnemiesIntervalId;
 	_onGameOverCallback;
 	gameEventCallbackMap;
+	__defaultAnimationAction = (enemyMeshes) => this.updateExistingEnemiesPosition(enemyMeshes);
 
 	/**
 	 * @constructor throw dependencies here
@@ -62,8 +63,7 @@ class Engine {
 	}
 
 	play() {
-		this.viewer.setAnimationAction((enemyMeshes) => this.updateExistingEnemiesPosition(enemyMeshes));
-		this.viewer.animate();
+		this.viewer.setAnimationAction(this.__defaultAnimationAction);
 		this._generateEnemiesIntervalId = setInterval(
 			() => this.generateEnemies(),
 			GENERATE_ENEMIES_INTERVAL_TIME
@@ -72,7 +72,7 @@ class Engine {
 
 	pause() {
 		clearInterval(this._generateEnemiesIntervalId);
-		this.viewer.stopAnimation();
+		this.viewer.removeAnimationAction();
 	}
 
 	onShot(coordinates) {
@@ -89,7 +89,6 @@ class Engine {
 
 	gameOver() {
 		clearInterval(this._generateEnemiesIntervalId);
-		this.viewer.stopAnimation();
 		this.viewer.removeAnimationAction();
 		this._onGameOverCallback();
 	}
