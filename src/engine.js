@@ -46,7 +46,7 @@ class Engine {
 	generateEnemies() {
 		if (this.existingEnemies.length < MAX_COUNT_OF_ENEMIES_AT_MOMENT) {
 			const enemyConfig = enemies[Math.floor((enemies.length) * Math.random())];
-			const enemyId = this.viewer.drawObject({});
+			const enemyId = this.viewer.drawObject(enemyConfig);
 
 			this.existingEnemies.push({
 				id: enemyId,

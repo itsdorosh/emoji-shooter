@@ -5,10 +5,19 @@ body {
 }
 body {
 	margin: 0;
+	font-family: monospace;
+	-webkit-touch-callout: none; /* iOS Safari */
+	-webkit-user-select: none; /* Safari */
+	-moz-user-select: none; /* Firefox */
+	-ms-user-select: none; /* Internet Explorer/Edge */
+	user-select: none;
 }
 
 button {
-	width: 90px;
+	padding: 10px 20px;
+	border-radius: 10px;
+	border: none;
+	font-family: inherit;
 }
 
 #canvasContainer {
@@ -24,6 +33,13 @@ button {
 	flex-direction: column;
 	/*rebeccapurple*/
 	background: rgba(102, 51, 153, 0.6);
+}
+
+#playButton,
+#restartButton {
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
 
 #gameButtons button {
