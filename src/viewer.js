@@ -1,56 +1,104 @@
 class Viewer {
 
-	_animationAction = undefined;
+	_objContainer;
+	_animationFrameId;
+	_animationAction = null;
 
 	constructor(HTMLContainer) {
 		this.HTMLContainer = HTMLContainer;
+		this._objContainer = new THREE.Object3D();
 
 		this.init();
-
-		this.animate();
 	}
 
 	init() {
 		const { offsetWidth, offsetHeight } = this.HTMLContainer;
-
 		this.scene = new THREE.Scene();
-
 		this.camera = new THREE.PerspectiveCamera(70, offsetWidth / offsetHeight, 0.1, 1000);
-
+		this.camera.position.set(0, 1, DEADLINE + 2);
+		this.camera.lookAt(0, 2.5, 0);
 		this.renderer = new THREE.WebGLRenderer({ antialias: true });
-
 		this.renderer.setSize(offsetWidth, offsetHeight);
-
-		this.renderer.setClearColor('#FFC0CB');
-
+		this.renderer.setClearColor('#ffc0cb');
 		this.HTMLContainer.appendChild(this.renderer.domElement);
+		this.scene.add(this._objContainer);
 
-		document.addEventListener('resize', this.onWindowsResize);
+		const grid = new THREE.GridHelper( 100, 20, 0x000000, 0x000000 );
+		grid.material.opacity = 0.2;
+		grid.material.transparent = true;
+		this.scene.add( grid );
 
+		this.renderFrame();
+
+		window.addEventListener('resize', this.onWindowResize);
 	}
 
-	setAnimationAction() {
+	setAnimationAction(callback) {
+		this._animationAction = callback;
 	}
 
 	removeAnimationAction() {
+		this._animationAction = null;
 	}
 
 	animate() {
-		this.renderer.render(this.scene, this.camera);
+		this.__animationFrameId = requestAnimationFrame(() => {
+			if (this._animationAction) { this._animationAction(this._objContainer.children); }
+			this.renderFrame();
+			this.animate();
+		});
 	}
 
 	stopAnimation() {
+		cancelAnimationFrame(this.__animationFrameId);
 	}
 
-	drawObject() {
-	}
-
-	removeObject() {
-	}
-
-	onWindowsResize = () => {
+	// FIXME: doesn't work properly
+	onWindowResize = () => {
+		this.animate();
 		this.camera.aspect = this.renderer.domElement.offsetWidth / this.renderer.domElement.offsetHeight;
 		this.camera.updateProjectionMatrix();
 		this.renderer.setSize(this.renderer.domElement.offsetWidth, this.renderer.domElement.offsetHeight);
+		this.stopAnimation();
+	}
+
+	renderFrame() {
+		this.renderer.render(this.scene, this.camera);
+	}
+
+	get objContainer() {
+		return this._objContainer;
+	}
+
+	/**
+	 * @method drawObject
+	 * @param obj - {object with params like: type: 'text', content: 'text', }
+	 */
+	drawObject(obj) {
+		const geometry = new THREE.BoxBufferGeometry(1, 1, 1);
+		const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
+		const cube = new THREE.Mesh(geometry, material);
+
+		cube.position.set(this.getRandomIntInclusive(-RANGE_X, RANGE_X), 0.5, -DEADLINE);
+		this._objContainer.add(cube);
+
+		return cube.uuid;
+	}
+
+	removeObject(uuid) {
+		const objForRemove = this._objContainer.getObjectByProperty('uuid', uuid);
+		this._objContainer.remove(objForRemove);
+	}
+
+	removeAllObjects() {
+		while(this._objContainer.children.length > 0){
+			this._objContainer.remove(this._objContainer.children[0]);
+		}
+	}
+
+	getRandomIntInclusive(min, max) {
+		min = Math.ceil(min);
+		max = Math.floor(max);
+		return Math.floor(Math.random() * (max - min + 1) + min);
 	}
 }

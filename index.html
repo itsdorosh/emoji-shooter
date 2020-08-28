@@ -1,34 +1,78 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Emoji Shooter 😈</title>
-		<style>
-				html,
-				body {
-					min-height: 100%;
-					height: 100%
-				}
-				body {
-					margin: 0;
-				}
-
-				#canvasContainer {
-					height: 100%;
-				}
-			</style>
+	<meta charset="UTF-8">
+	<title>Emoji Shooter 🔫</title>
+	<link rel="stylesheet" href="./main.css">
 </head>
 <body>
-	<div id="canvasContainer"></div>
+<div id="inGameButtons" class="position-absolute hide">
+	<p id="pointsCount">Count: 0</p>
+	<button id="pauseButton">Pause ⏸</button>
+</div>
 
-	<script src="https://unpkg.com/three@0.119.1/build/three.js"></script>
-	<script src="./src/controls.js"></script>
-	<script src="./src/viewer.js"></script>
-	<script src="./src/engine.js"></script>
-	<script>
-		const viewer = new Viewer(document.getElementById('canvasContainer'));
-		const controls = new Controls();
-		const engine = new Engine(viewer, controls);
-	</script>
+<div id="gameButtons" class="position-absolute">
+	<h1 id="greetingCaption">Emoji Shooter 🔫</h1>
+	<h1 id="gameOverCaption" class="hide">GAME OVER</h1>
+	<button id="playButton">Play ▶️</button>
+	<button id="restartButton" class="hide">Restart 🔄</button>
+</div>
+<div id="canvasContainer"></div>
+
+<script src="https://unpkg.com/three@0.119.1/build/three.js"></script>
+<script src="./src/constants.js"></script>
+<script src="src/enemies.js"></script>
+<script src="./src/controls.js"></script>
+<script src="./src/raycaster.js"></script>
+<script src="./src/viewer.js"></script>
+<script src="./src/engine.js"></script>
+
+<script>
+	const canvasContainer = document.getElementById('canvasContainer');
+
+	const viewer = new Viewer(canvasContainer);
+
+	const controls = new Controls();
+	controls.setRootObjectForSubscriptions(canvasContainer);
+	controls.init();
+
+	const raycaster = new Raycaster(viewer.camera);
+
+	const engine = new Engine(viewer, controls, raycaster);
+
+	engine.onPointCountUpdate((count) => {
+		document.getElementById('pointsCount').innerText = `Count: ${count}`;
+	});
+
+	engine.onGameOver(() => {
+		document.getElementById('gameButtons').classList.remove('hide');
+		document.getElementById('greetingCaption').classList.add('hide');
+		document.getElementById('gameOverCaption').classList.remove('hide');
+		document.getElementById('playButton').classList.add('hide');
+		document.getElementById('restartButton').classList.remove('hide');
+	});
+
+	const playButton = document.getElementById('playButton');
+	playButton.addEventListener('click', () => {
+		document.getElementById('gameButtons').classList.add('hide');
+		document.getElementById('inGameButtons').classList.remove('hide');
+		engine.play();
+	});
+
+	const pauseButton = document.getElementById('pauseButton');
+	pauseButton.addEventListener('click', () => {
+		document.getElementById('gameButtons').classList.remove('hide');
+		document.getElementById('restartButton').classList.remove('hide');
+		engine.pause();
+	});
+
+	const restartButton = document.getElementById('restartButton');
+	restartButton.addEventListener('click', () => {
+		document.getElementById('greetingCaption').classList.add('hide');
+		document.getElementById('gameOverCaption').classList.remove('hide');
+		document.getElementById('gameButtons').classList.add('hide');
+		engine.restart();
+	});
+</script>
 </body>
 </html>
