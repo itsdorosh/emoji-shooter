@@ -28,7 +28,7 @@ class Viewer {
 		grid.material.transparent = true;
 		this.scene.add( grid );
 
-		this.renderFrame();
+		this.animate();
 
 		window.addEventListener('resize', this.onWindowResize);
 	}
@@ -49,17 +49,10 @@ class Viewer {
 		});
 	}
 
-	stopAnimation() {
-		cancelAnimationFrame(this.__animationFrameId);
-	}
-
-	// FIXME: doesn't work properly
 	onWindowResize = () => {
-		this.animate();
-		this.camera.aspect = this.renderer.domElement.offsetWidth / this.renderer.domElement.offsetHeight;
+		this.camera.aspect = this.HTMLContainer.offsetWidth / this.HTMLContainer.offsetHeight;
 		this.camera.updateProjectionMatrix();
-		this.renderer.setSize(this.renderer.domElement.offsetWidth, this.renderer.domElement.offsetHeight);
-		this.stopAnimation();
+		this.renderer.setSize(this.HTMLContainer.offsetWidth, this.HTMLContainer.offsetHeight);
 	}
 
 	renderFrame() {
