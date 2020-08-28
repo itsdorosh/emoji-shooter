@@ -53,6 +53,7 @@ class Viewer {
 		cancelAnimationFrame(this.__animationFrameId);
 	}
 
+	// FIXME: doesn't work properly
 	onWindowResize = () => {
 		this.animate();
 		this.camera.aspect = this.renderer.domElement.offsetWidth / this.renderer.domElement.offsetHeight;
@@ -74,7 +75,6 @@ class Viewer {
 	 * @param obj - {object with params like: type: 'text', content: 'text', }
 	 */
 	drawObject(obj) {
-		// TODO: make some method for generating random position
 		const geometry = new THREE.BoxBufferGeometry(1, 1, 1);
 		const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
 		const cube = new THREE.Mesh(geometry, material);
@@ -99,6 +99,6 @@ class Viewer {
 	getRandomIntInclusive(min, max) {
 		min = Math.ceil(min);
 		max = Math.floor(max);
-		return Math.floor(Math.random() * (max - min + 1) + min); //The maximum is inclusive and the minimum is inclusive
+		return Math.floor(Math.random() * (max - min + 1) + min);
 	}
 }
