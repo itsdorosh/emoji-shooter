@@ -15,7 +15,7 @@ class Viewer {
 		const { offsetWidth, offsetHeight } = this.HTMLContainer;
 		this.scene = new THREE.Scene();
 		this.camera = new THREE.PerspectiveCamera(70, offsetWidth / offsetHeight, 0.1, 1000);
-		this.camera.position.set(0, 1, DEADLINE + 2);
+		this.camera.position.set(0, 1, DEADLINE + 5);
 		this.camera.lookAt(0, 2.5, 0);
 		this.renderer = new THREE.WebGLRenderer({ antialias: true });
 		this.renderer.setSize(offsetWidth, offsetHeight);
@@ -65,49 +65,49 @@ class Viewer {
 
 	/**
 	 * @method drawObject
-	 * @param obj - {object with params like: type: 'text', content: 'text', }
+	 * @param config - {object with params like: type: 'text', content: 'text', }
 	 */
-	drawObject(obj) {
-		const enemy = this._makeEmojiSprite(obj.look, .3);
+	drawObject(config) {
+		const obj = this._makeEmojiSprite(config.look);
 
-		enemy.position.set(this.getRandomIntInclusive(-RANGE_X, RANGE_X), 0.5, -DEADLINE);
-		this._objContainer.add(enemy);
+		obj.position.set(
+			this.getRandomInt(-RANGE_X, RANGE_X),
+			this.getRandomFloat(0, RANGE_Y),
+			-DEADLINE
+		);
 
-		return enemy.uuid;
+		this._objContainer.add(obj);
+
+		return obj.uuid;
 	}
 
-	_makeEmojiSprite(message, emojiSize = 2.5) {
-		let url = window.location.search.substring(1);
-		let emojiwidth = new URLSearchParams(url).get("emojiWidth")
-			? new URLSearchParams(url).get("emojiWidth")
-			: 80;
-		let fontface = "Arial";
-		let fontsize = emojiwidth * 0.75;
+	_makeEmojiSprite(look, emojiTextureSize = 100) {
+		const emojiCanvas = document.createElement('canvas');
 
-		let canvas = document.createElement("canvas");
-		canvas.width = emojiwidth;
-		canvas.height = emojiwidth;
-		let context = canvas.getContext("2d");
-		context.font = `Bold ${fontsize}px ${fontface}`;
-		context.font = `Bold ${fontsize}px ${fontface}`;
+		emojiCanvas.width = emojiTextureSize;
+		emojiCanvas.height = emojiTextureSize;
+
+		const fontFace = 'Arial';
+		const fontSize = emojiTextureSize * 0.75;
+
+		const context = emojiCanvas.getContext("2d");
+		context.font = `Bold ${fontSize}px ${fontFace}`;
 		context.lineWidth = 1;
-		context.fillText(message, -2, fontsize - 3);
+		context.fillText(look, -2, fontSize - 3);
 
-		let texture = new THREE.Texture(canvas);
-		texture.needsUpdate = true;
+		const emojiTexture = new THREE.Texture(emojiCanvas);
+		emojiTexture.needsUpdate = true;
 
-		let spriteMaterial = new THREE.SpriteMaterial({
-			map: texture,
+		const spriteMaterial = new THREE.SpriteMaterial({
+			map: emojiTexture,
 			transparent: false,
 			alphaTest: 0.5
 		});
 
 		let sprite = new THREE.Sprite(spriteMaterial);
-		sprite.scale.set(
-			emojiSize * 0.5 * fontsize,
-			emojiSize * 0.45 * fontsize,
-			0.25 * fontsize
-		);
+
+		sprite.scale.set(3, 3, 3);
+
 		return sprite;
 	}
 
@@ -122,9 +122,13 @@ class Viewer {
 		}
 	}
 
-	getRandomIntInclusive(min, max) {
+	getRandomInt(min, max) {
 		min = Math.ceil(min);
 		max = Math.floor(max);
 		return Math.floor(Math.random() * (max - min + 1) + min);
+	}
+
+	getRandomFloat(min, max) {
+		return Math.random() * (max - min) + min;
 	}
 }

@@ -6,17 +6,10 @@
 class Controls {
 	rootObject;
 
-	constructor() {
+	constructor(rootObject = document.body) {
 		this.eventStorage = {};
-	}
-
-	/**
-	 * @method setRootObjectForSubscriptions
-	 * @description this method allows you set container, from witch we should be notified about user interactions
-	 * @param rootObject - an HTMLElement for subscriptions
-	 */
-	setRootObjectForSubscriptions(rootObject = document.body) {
 		this.rootObject = rootObject;
+		this.init();
 	}
 
 	/**

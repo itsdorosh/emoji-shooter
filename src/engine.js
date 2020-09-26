@@ -100,7 +100,7 @@ class Engine {
 		this.play();
 	}
 
-	destroyEnemy(enemyId) {
+		destroyEnemy(enemyId) {
 		const reward = this.existingEnemies.find(({ id }) => id === enemyId).value;
 		this.updatePointCount(this._pointCount += reward);
 		this.existingEnemies = this.existingEnemies.filter(({ id }) => id !== enemyId);

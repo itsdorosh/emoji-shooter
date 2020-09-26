@@ -28,16 +28,23 @@
 <script src="./src/engine.js"></script>
 
 <script>
+	// containers
 	const canvasContainer = document.getElementById('canvasContainer');
+	const inGameButtons = document.getElementById('inGameButtons');
+	const gameButtons = document.getElementById('gameButtons');
+
+	// buttons
+	const playButton = document.getElementById('playButton');
+	const pauseButton = document.getElementById('pauseButton');
+	const restartButton = document.getElementById('restartButton');
+
+	// captions
+	const greetingCaption = document.getElementById('greetingCaption');
+	const gameOverCaption = document.getElementById('gameOverCaption');
 
 	const viewer = new Viewer(canvasContainer);
-
-	const controls = new Controls();
-	controls.setRootObjectForSubscriptions(canvasContainer);
-	controls.init();
-
+	const controls = new Controls(canvasContainer);
 	const raycaster = new Raycaster(viewer.camera);
-
 	const engine = new Engine(viewer, controls, raycaster);
 
 	engine.onPointCountUpdate((count) => {
@@ -45,32 +52,29 @@
 	});
 
 	engine.onGameOver(() => {
-		document.getElementById('gameButtons').classList.remove('hide');
-		document.getElementById('greetingCaption').classList.add('hide');
-		document.getElementById('gameOverCaption').classList.remove('hide');
-		document.getElementById('playButton').classList.add('hide');
-		document.getElementById('restartButton').classList.remove('hide');
+		gameButtons.classList.remove('hide');
+		greetingCaption.classList.add('hide');
+		gameOverCaption.classList.remove('hide');
+		playButton.classList.add('hide');
+		restartButton.classList.remove('hide');
 	});
 
-	const playButton = document.getElementById('playButton');
 	playButton.addEventListener('click', () => {
-		document.getElementById('gameButtons').classList.add('hide');
-		document.getElementById('inGameButtons').classList.remove('hide');
+		gameButtons.classList.add('hide');
+		inGameButtons.classList.remove('hide');
 		engine.play();
 	});
 
-	const pauseButton = document.getElementById('pauseButton');
 	pauseButton.addEventListener('click', () => {
-		document.getElementById('gameButtons').classList.remove('hide');
-		document.getElementById('restartButton').classList.remove('hide');
+		gameButtons.classList.remove('hide');
+		restartButton.classList.remove('hide');
 		engine.pause();
 	});
 
-	const restartButton = document.getElementById('restartButton');
 	restartButton.addEventListener('click', () => {
-		document.getElementById('greetingCaption').classList.add('hide');
-		document.getElementById('gameOverCaption').classList.remove('hide');
-		document.getElementById('gameButtons').classList.add('hide');
+		greetingCaption.classList.add('hide');
+		gameOverCaption.classList.remove('hide');
+		gameButtons.classList.add('hide');
 		engine.restart();
 	});
 </script>
