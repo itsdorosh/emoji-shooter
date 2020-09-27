@@ -4,11 +4,13 @@
  * you can simply subscribe on some of AVAILABLE_DOM_EVENTS
  */
 class Controls {
-	rootObject;
 
 	constructor(rootObject = document.body) {
 		this.eventStorage = {};
+		this.gamepads = [];
 		this.rootObject = rootObject;
+		this.currentControlsMode = CONTROLS_MODES.MOUSE_MODE;
+
 		this.init();
 	}
 
@@ -16,11 +18,28 @@ class Controls {
 	 * @method init
 	 */
 	init() {
+		window.addEventListener("gamepadconnected", ({ gamepad }) => {
+			this.gamepads.push(gamepad);
+			this.dispatch('gamepadconnected', gamepad);
+		});
+
+		window.addEventListener("gamepaddisconnected", ({ gamepad }) => {
+			this.gamepads = this.gamepads.filter(savedGamepad => savedGamepad.id !== gamepad.id);
+			this.dispatch('gamepaddisconnected', gamepad);
+		});
+
 		AVAILABLE_DOM_EVENTS.forEach((eventName) => {
 			this.rootObject.addEventListener(eventName, (event) => {
 				this.dispatch(eventName, event);
 			});
 		});
+	}
+
+	switchControlsMode(mode) {
+		if (mode in CONTROLS_MODES) {
+			this.currentControlsMode = mode;
+			this.dispatch('controlsModeSwitched', mode);
+		}
 	}
 
 	/**
@@ -41,11 +60,11 @@ class Controls {
 	 * @method dispatch
 	 * @description this method should provide way for trigger some callback by eventName
 	 * @param eventName
-	 * @param DOMEvent
+	 * @param data
 	 */
-	dispatch(eventName, DOMEvent) {
+	dispatch(eventName, data) {
 		if (eventName in this.eventStorage) {
-			this.eventStorage[eventName](DOMEvent);
+			this.eventStorage[eventName](data);
 		} else {
 			throw(`there is no callback for ${eventName} event name`);
 		}

@@ -17,6 +17,13 @@
 	<button id="playButton">Play ▶️</button>
 	<button id="restartButton" class="hide">Restart 🔄</button>
 </div>
+
+<div id="generalButtons" class="position-absolute">
+	<span id="fullscreenMode" onclick="toggleFullScreen()">📺️</span>
+	<span id="gamepad" class="hide">🎮</span>
+	<span id="mouse" class="hide">🖱</span>
+</div>
+
 <div id="canvasContainer"></div>
 
 <script src="https://unpkg.com/three@0.119.1/build/three.js"></script>
@@ -37,6 +44,8 @@
 	const playButton = document.getElementById('playButton');
 	const pauseButton = document.getElementById('pauseButton');
 	const restartButton = document.getElementById('restartButton');
+	const gamepadButton = document.getElementById('gamepad');
+	const mouseButton = document.getElementById('mouse');
 
 	// captions
 	const greetingCaption = document.getElementById('greetingCaption');
@@ -77,6 +86,53 @@
 		gameButtons.classList.add('hide');
 		engine.restart();
 	});
+
+	gamepadButton.addEventListener('click', () => controls.switchControlsMode(CONTROLS_MODES.GAMEPAD_MODE));
+
+	mouseButton.addEventListener('click', () => controls.switchControlsMode(CONTROLS_MODES.MOUSE_MODE));
+
+	controls.on('gamepadconnected', () => {
+		controls.switchControlsMode(CONTROLS_MODES.MOUSE_MODE);
+	});
+
+	controls.on('gamepaddisconnected', () => {
+		controls.switchControlsMode(CONTROLS_MODES.NO_MODE);
+	});
+
+	controls.on('controlsModeSwitched', (mode) => {
+		switch (mode) {
+			case CONTROLS_MODES.MOUSE_MODE: {
+				mouseButton.classList.add('hide');
+				gamepadButton.classList.remove('hide');
+
+				break;
+			}
+
+			case CONTROLS_MODES.GAMEPAD_MODE: {
+				mouseButton.classList.remove('hide');
+				gamepadButton.classList.add('hide');
+
+				break;
+			}
+
+			case CONTROLS_MODES.NO_MODE: {
+				mouseButton.classList.add('hide');
+				gamepadButton.classList.add('hide');
+
+				break;
+			}
+		}
+	});
+
+	function toggleFullScreen() {
+		if (!document.fullscreenElement) {
+			document.documentElement.requestFullscreen();
+		} else {
+			if (document.exitFullscreen) {
+				document.exitFullscreen();
+			}
+		}
+	}
 </script>
 </body>
 </html>

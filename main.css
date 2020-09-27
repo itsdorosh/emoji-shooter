@@ -56,6 +56,17 @@ button {
 	background: rgba(102, 51, 153, 0.6);
 }
 
+#generalButtons {
+	display: flex;
+	right: 10px;
+	bottom: 10px;
+	font-size: 24px;
+}
+
+#generalButtons span {
+	margin-left: 15px;
+}
+
 .position-absolute {
 	position: absolute;
 }
