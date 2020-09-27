@@ -71,8 +71,8 @@ class Viewer {
 		const obj = this._makeEmojiSprite(config.look);
 
 		obj.position.set(
-			this.getRandomInt(-RANGE_X, RANGE_X),
-			this.getRandomFloat(0, RANGE_Y),
+			getRandomInt(-RANGE_X, RANGE_X),
+			getRandomFloat(0, RANGE_Y),
 			-DEADLINE
 		);
 
@@ -120,15 +120,5 @@ class Viewer {
 		while(this._objContainer.children.length > 0){
 			this._objContainer.remove(this._objContainer.children[0]);
 		}
-	}
-
-	getRandomInt(min, max) {
-		min = Math.ceil(min);
-		max = Math.floor(max);
-		return Math.floor(Math.random() * (max - min + 1) + min);
-	}
-
-	getRandomFloat(min, max) {
-		return Math.random() * (max - min) + min;
 	}
 }

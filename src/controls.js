@@ -11,6 +11,12 @@ class Controls {
 		this.rootObject = rootObject;
 		this.currentControlsMode = CONTROLS_MODES.MOUSE_MODE;
 
+		this.aim = document.createElement('p');
+		this.aim.innerText = '+';
+		this.aim.classList.add('aim', 'position-absolute');
+		hide(this.aim);
+		this.rootObject.appendChild(this.aim);
+
 		this.init();
 	}
 
@@ -38,8 +44,32 @@ class Controls {
 	switchControlsMode(mode) {
 		if (mode in CONTROLS_MODES) {
 			this.currentControlsMode = mode;
+			this.handleSwitchControlsMode(mode);
 			this.dispatch('controlsModeSwitched', mode);
 		}
+	}
+
+	handleSwitchControlsMode(mode) {
+		if(mode === CONTROLS_MODES.GAMEPAD_MODE) {
+			show(this.aim);
+			this.aim.style.marginLeft = `-${39.59 / 2}px`;
+			this.moveAimToCoordinates(0, 0);
+		}
+
+		else if(mode === CONTROLS_MODES.MOUSE_MODE || mode === CONTROLS_MODES.NO_MODE) {
+			hide(this.aim);
+		}
+	}
+
+	moveAimToCoordinates(x, y) {
+		const pos = convertCoordinatesToPixels(
+			this.rootObject.offsetWidth,
+			this.rootObject.offsetHeight,
+			x, y
+		);
+
+		this.aim.style.left = `${pos.x}px`;
+		this.aim.style.top = `${pos.y}px`;
 	}
 
 	/**

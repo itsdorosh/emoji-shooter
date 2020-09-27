@@ -11,6 +11,7 @@ body {
 	-moz-user-select: none; /* Firefox */
 	-ms-user-select: none; /* Internet Explorer/Edge */
 	user-select: none;
+	overflow: hidden;
 }
 
 button {
@@ -65,6 +66,13 @@ button {
 
 #generalButtons span {
 	margin-left: 15px;
+}
+
+.aim {
+	font-size: 72px;
+	margin: 0;
+	padding: 0;
+	line-height: 0;
 }
 
 .position-absolute {
