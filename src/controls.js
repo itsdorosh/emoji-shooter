@@ -7,7 +7,6 @@ class Controls {
 
 	constructor(rootObject = document.body) {
 		this.eventStorage = {};
-		this.gamepads = [];
 		this.rootObject = rootObject;
 		this.currentControlsMode = CONTROLS_MODES.MOUSE_MODE;
 
@@ -25,12 +24,10 @@ class Controls {
 	 */
 	init() {
 		window.addEventListener("gamepadconnected", ({ gamepad }) => {
-			this.gamepads.push(gamepad);
 			this.dispatch('gamepadconnected', gamepad);
 		});
 
 		window.addEventListener("gamepaddisconnected", ({ gamepad }) => {
-			this.gamepads = this.gamepads.filter(savedGamepad => savedGamepad.id !== gamepad.id);
 			this.dispatch('gamepaddisconnected', gamepad);
 		});
 
@@ -70,6 +67,28 @@ class Controls {
 
 		this.aim.style.left = `${pos.x}px`;
 		this.aim.style.top = `${pos.y}px`;
+	}
+
+	handleGamepadButtons() {
+		if (this.currentControlsMode === CONTROLS_MODES.GAMEPAD_MODE) {
+
+			const gamepads = navigator.getGamepads ? navigator.getGamepads() : [];
+			if (!gamepads) {
+				return;
+			}
+
+			const gp = gamepads[0];
+			if (gp.buttons[0].pressed) {
+				this.dispatch('shot1', convertCoordinatesToPixels(
+					this.rootObject.offsetWidth,
+					this.rootObject.offsetHeight,
+					gp.axes[0],
+					gp.axes[1]
+				));
+			}
+
+			this.moveAimToCoordinates(gp.axes[0], gp.axes[1])
+		}
 	}
 
 	/**

@@ -19,8 +19,10 @@ class Engine {
 		this.controls = controls;
 		this.raycaster = raycaster;
 
+		this.viewer.addAnimationAction(() => this.controls.handleGamepadButtons());
+
 		this.gameEventCallbackMap = {
-			'shot': ({ clientX, clientY }) => this.onShot({clientX, clientY}),
+			'shot': ({ clientX, clientY }) => this.onShot({x: clientX, y: clientY}),
 		};
 
 		this.init();
@@ -34,6 +36,10 @@ class Engine {
 				});
 			});
 		}
+
+		this.controls.on('shot1', (pos) => {
+			this.onShot(pos);
+		});
 
 		this.raycaster.onIntersection((UUID) => {
 			this.onHit(UUID);
@@ -63,7 +69,7 @@ class Engine {
 	}
 
 	play() {
-		this.viewer.setAnimationAction(this.__defaultAnimationAction);
+		this.viewer.addAnimationAction(this.__defaultAnimationAction);
 		this._generateEnemiesIntervalId = setInterval(
 			() => this.generateEnemies(),
 			GENERATE_ENEMIES_INTERVAL_TIME
@@ -72,7 +78,7 @@ class Engine {
 
 	pause() {
 		clearInterval(this._generateEnemiesIntervalId);
-		this.viewer.removeAnimationAction();
+		this.viewer.clearAnimationActions();
 	}
 
 	onShot(coordinates) {
@@ -89,7 +95,7 @@ class Engine {
 
 	gameOver() {
 		clearInterval(this._generateEnemiesIntervalId);
-		this.viewer.removeAnimationAction();
+		this.viewer.clearAnimationActions();
 		this._onGameOverCallback();
 	}
 

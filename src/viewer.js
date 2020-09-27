@@ -2,7 +2,7 @@ class Viewer {
 
 	_objContainer;
 	_animationFrameId;
-	_animationAction = null;
+	_animationActions = [];
 
 	constructor(HTMLContainer) {
 		this.HTMLContainer = HTMLContainer;
@@ -33,17 +33,19 @@ class Viewer {
 		window.addEventListener('resize', this.onWindowResize);
 	}
 
-	setAnimationAction(callback) {
-		this._animationAction = callback;
+	addAnimationAction(callback) {
+		this._animationActions.push(callback);
 	}
 
-	removeAnimationAction() {
-		this._animationAction = null;
+	clearAnimationActions() {
+		this._animationActions.length = 0;
 	}
 
 	animate() {
 		this.__animationFrameId = requestAnimationFrame(() => {
-			if (this._animationAction) { this._animationAction(this._objContainer.children); }
+			if (this._animationActions.length) {
+				this._animationActions.forEach(animationAction => animationAction(this._objContainer.children));
+			}
 			this.renderFrame();
 			this.animate();
 		});

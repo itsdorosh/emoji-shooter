@@ -19,6 +19,6 @@ function show(...elements) {
 function convertCoordinatesToPixels(width, height, x = 0, y = 0) {
 	return {
 		x: ((width / 2) + ((width / 2) * x)),
-		y: ((height / 2) - ((height / 2) * y)),
+		y: ((height / 2) + ((height / 2) * y)),
 	};
 }
