@@ -82,12 +82,12 @@ class Controls {
 				this.dispatch('shot1', convertCoordinatesToPixels(
 					this.rootObject.offsetWidth,
 					this.rootObject.offsetHeight,
-					gp.axes[0],
-					gp.axes[1]
+					gp.axes[0].toFixed(1),
+					gp.axes[1].toFixed(1)
 				));
 			}
 
-			this.moveAimToCoordinates(gp.axes[0], gp.axes[1])
+			this.moveAimToCoordinates(gp.axes[0].toFixed(1), gp.axes[1].toFixed(1))
 		}
 	}
 
