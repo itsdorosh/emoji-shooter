@@ -12,8 +12,8 @@ class Raycaster {
 	 * @param intersectionParams - object with three fields: coordinates, container & types
 	 */
 	intersect(intersectionParams) {
-		this.mouse.x = (intersectionParams.coordinates.clientX / window.innerWidth) * 2 - 1;
-		this.mouse.y = -(intersectionParams.coordinates.clientY / window.innerHeight) * 2 + 1;
+		this.mouse.x = (intersectionParams.coordinates.x / window.innerWidth) * 2 - 1;
+		this.mouse.y = -(intersectionParams.coordinates.y / window.innerHeight) * 2 + 1;
 
 		this.raycaster.setFromCamera(this.mouse, this.camera);
 		const intersects = this.raycaster.intersectObjects(intersectionParams.container.children);

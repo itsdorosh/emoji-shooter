@@ -14,3 +14,11 @@ const DEADLINE = 10;
 const RANGE_X = 10;
 
 const RANGE_Y = 2;
+
+const CONTROLS_MODES = {
+	NO_MODE: 'NO_MODE',
+	MOUSE_MODE: 'MOUSE_MODE',
+	GAMEPAD_MODE: 'GAMEPAD_MODE',
+	VR_MODE: 'VR_MODE', // for future
+	AR_MODE: 'AR_MODE', // for future
+}

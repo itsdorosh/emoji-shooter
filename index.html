@@ -17,11 +17,19 @@
 	<button id="playButton">Play ▶️</button>
 	<button id="restartButton" class="hide">Restart 🔄</button>
 </div>
+
+<div id="generalButtons" class="position-absolute">
+	<span id="fullscreenMode" onclick="toggleFullScreen()">📺️</span>
+	<span id="gamepad" class="hide">🎮</span>
+	<span id="mouse" class="hide">🖱</span>
+</div>
+
 <div id="canvasContainer"></div>
 
 <script src="https://unpkg.com/three@0.119.1/build/three.js"></script>
 <script src="./src/constants.js"></script>
 <script src="src/enemies.js"></script>
+<script src="./src/helpers.js"></script>
 <script src="./src/controls.js"></script>
 <script src="./src/raycaster.js"></script>
 <script src="./src/viewer.js"></script>
@@ -37,6 +45,8 @@
 	const playButton = document.getElementById('playButton');
 	const pauseButton = document.getElementById('pauseButton');
 	const restartButton = document.getElementById('restartButton');
+	const gamepadButton = document.getElementById('gamepad');
+	const mouseButton = document.getElementById('mouse');
 
 	// captions
 	const greetingCaption = document.getElementById('greetingCaption');
@@ -52,31 +62,69 @@
 	});
 
 	engine.onGameOver(() => {
-		gameButtons.classList.remove('hide');
-		greetingCaption.classList.add('hide');
-		gameOverCaption.classList.remove('hide');
-		playButton.classList.add('hide');
-		restartButton.classList.remove('hide');
+		hide(greetingCaption, playButton);
+		show(gameButtons, gameOverCaption, restartButton);
 	});
 
 	playButton.addEventListener('click', () => {
-		gameButtons.classList.add('hide');
-		inGameButtons.classList.remove('hide');
+		hide(gameButtons);
+		show(inGameButtons);
 		engine.play();
 	});
 
 	pauseButton.addEventListener('click', () => {
-		gameButtons.classList.remove('hide');
-		restartButton.classList.remove('hide');
+		show(gameButtons, restartButton, playButton);
 		engine.pause();
 	});
 
 	restartButton.addEventListener('click', () => {
-		greetingCaption.classList.add('hide');
-		gameOverCaption.classList.remove('hide');
-		gameButtons.classList.add('hide');
+		hide(gameOverCaption, gameButtons);
+		show(greetingCaption);
 		engine.restart();
 	});
+
+	gamepadButton.addEventListener('click', () => controls.switchControlsMode(CONTROLS_MODES.GAMEPAD_MODE));
+
+	mouseButton.addEventListener('click', () => controls.switchControlsMode(CONTROLS_MODES.MOUSE_MODE));
+
+	controls.on('gamepadconnected', () => {
+		controls.switchControlsMode(CONTROLS_MODES.MOUSE_MODE);
+	});
+
+	controls.on('gamepaddisconnected', () => {
+		controls.switchControlsMode(CONTROLS_MODES.NO_MODE);
+	});
+
+	controls.on('controlsModeSwitched', (mode) => {
+		switch (mode) {
+			case CONTROLS_MODES.MOUSE_MODE: {
+				hide(mouseButton);
+				show(gamepadButton);
+				break;
+			}
+
+			case CONTROLS_MODES.GAMEPAD_MODE: {
+				hide(gamepadButton);
+				show(mouseButton);
+				break;
+			}
+
+			case CONTROLS_MODES.NO_MODE: {
+				hide(mouseButton, gamepadButton);
+				break;
+			}
+		}
+	});
+
+	function toggleFullScreen() {
+		if (!document.fullscreenElement) {
+			document.documentElement.requestFullscreen();
+		} else {
+			if (document.exitFullscreen) {
+				document.exitFullscreen();
+			}
+		}
+	}
 </script>
 </body>
 </html>
