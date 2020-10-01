@@ -6,7 +6,8 @@ class Engine {
 	_generateEnemiesIntervalId;
 	_onGameOverCallback;
 	gameEventCallbackMap;
-	__defaultAnimationAction = (enemyMeshes) => this.updateExistingEnemiesPosition(enemyMeshes);
+	__updateEnemiesDefaultAnimationAction = (enemyMeshes) => this.updateExistingEnemiesPosition(enemyMeshes);
+	__handleGamepadButtonsDefaultAnimationAction = () => this.controls.handleGamepadButtons();
 
 	/**
 	 * @constructor throw dependencies here
@@ -19,7 +20,7 @@ class Engine {
 		this.controls = controls;
 		this.raycaster = raycaster;
 
-		this.viewer.addAnimationAction(() => this.controls.handleGamepadButtons());
+		this.viewer.addAnimationActions(this.__handleGamepadButtonsDefaultAnimationAction);
 
 		this.gameEventCallbackMap = {
 			'shot': ({ clientX, clientY }) => this.onShot({x: clientX, y: clientY}),
@@ -69,7 +70,11 @@ class Engine {
 	}
 
 	play() {
-		this.viewer.addAnimationAction(this.__defaultAnimationAction);
+		this.viewer.addAnimationActions(
+			this.__updateEnemiesDefaultAnimationAction,
+			this.__handleGamepadButtonsDefaultAnimationAction
+		);
+
 		this._generateEnemiesIntervalId = setInterval(
 			() => this.generateEnemies(),
 			GENERATE_ENEMIES_INTERVAL_TIME

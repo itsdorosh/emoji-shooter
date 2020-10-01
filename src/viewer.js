@@ -33,8 +33,8 @@ class Viewer {
 		window.addEventListener('resize', this.onWindowResize);
 	}
 
-	addAnimationAction(callback) {
-		this._animationActions.push(callback);
+	addAnimationActions(...callbacks) {
+		this._animationActions.push(...callbacks);
 	}
 
 	clearAnimationActions() {
