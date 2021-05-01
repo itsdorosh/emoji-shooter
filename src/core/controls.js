@@ -77,7 +77,7 @@ class Controls {
         ));
       }
 
-      this.moveAimToCoordinates(gp.axes[0].toFixed(1), gp.axes[1].toFixed(1))
+      this.moveAimToCoordinates(gp.axes[0].toFixed(1), gp.axes[1].toFixed(1));
     }
   }
 

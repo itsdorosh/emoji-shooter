@@ -44,7 +44,8 @@ class Engine {
   generateEnemies() {
     if (this.existingEnemies.length < MAX_COUNT_OF_ENEMIES_AT_MOMENT) {
       const enemyConfig = enemies[Math.floor((enemies.length) * Math.random())];
-      const enemyId = this.viewer.drawObject(enemyConfig);
+      const enemyObj = this._makeEmojiSprite(enemyConfig.look);
+      const enemyId = this.viewer.drawObject(enemyObj);
 
       this.existingEnemies.push({
         id: enemyId,
@@ -68,6 +69,8 @@ class Engine {
       this.__handleGamepadButtonsDefaultAnimationAction
     );
 
+    this.viewer.startAnimation();
+
     this._generateEnemiesIntervalId = setInterval(
       () => this.generateEnemies(),
       GENERATE_ENEMIES_INTERVAL_TIME
@@ -77,6 +80,7 @@ class Engine {
   pause() {
     clearInterval(this._generateEnemiesIntervalId);
     this.viewer.clearAnimationActions();
+    this.viewer.stopAnimation();
   }
 
   onShot(coordinates) {
@@ -94,6 +98,7 @@ class Engine {
   gameOver() {
     clearInterval(this._generateEnemiesIntervalId);
     this.viewer.clearAnimationActions();
+    this.viewer.stopAnimation();
     this._onGameOverCallback();
   }
 
@@ -124,4 +129,33 @@ class Engine {
     this._onGameOverCallback = callback;
   }
 
+  _makeEmojiSprite(look, emojiTextureSize = 100) {
+    const emojiCanvas = document.createElement('canvas');
+
+    emojiCanvas.width = emojiTextureSize;
+    emojiCanvas.height = emojiTextureSize;
+
+    const fontFace = 'Arial';
+    const fontSize = emojiTextureSize * 0.75;
+
+    const context = emojiCanvas.getContext("2d");
+    context.font = `Bold ${fontSize}px ${fontFace}`;
+    context.lineWidth = 1;
+    context.fillText(look, -2, fontSize - 3);
+
+    const emojiTexture = new THREE.Texture(emojiCanvas);
+    emojiTexture.needsUpdate = true;
+
+    const spriteMaterial = new THREE.SpriteMaterial({
+      map: emojiTexture,
+      transparent: false,
+      alphaTest: 0.5
+    });
+
+    let sprite = new THREE.Sprite(spriteMaterial);
+
+    sprite.scale.set(3, 3, 3);
+
+    return sprite;
+  }
 }

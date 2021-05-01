@@ -3,6 +3,7 @@ class Viewer {
   _objContainer;
   _animationFrameId;
   _animationActions = [];
+  _isAnimationPerforming = false;
 
   constructor(HTMLContainer) {
     this.HTMLContainer = HTMLContainer;
@@ -28,7 +29,7 @@ class Viewer {
     grid.material.transparent = true;
     this.scene.add(grid);
 
-    this.animate();
+    this.renderFrame();
 
     window.addEventListener('resize', this.onWindowResize);
   }
@@ -41,20 +42,31 @@ class Viewer {
     this._animationActions.length = 0;
   }
 
-  animate() {
-    this.__animationFrameId = requestAnimationFrame(() => {
+  performAnimation() {
+    this._animationFrameId = requestAnimationFrame(() => {
       if (this._animationActions.length) {
         this._animationActions.forEach(animationAction => animationAction(this._objContainer.children));
       }
       this.renderFrame();
-      this.animate();
+      this._isAnimationPerforming && this.performAnimation();
     });
+  }
+
+  startAnimation() {
+    this._isAnimationPerforming = true;
+    this.performAnimation();
+  }
+
+  stopAnimation() {
+    this._isAnimationPerforming = false;
+    cancelAnimationFrame(this._animationFrameId);
   }
 
   onWindowResize = () => {
     this.camera.aspect = this.HTMLContainer.offsetWidth / this.HTMLContainer.offsetHeight;
     this.camera.updateProjectionMatrix();
     this.renderer.setSize(this.HTMLContainer.offsetWidth, this.HTMLContainer.offsetHeight);
+    this.renderFrame();
   }
 
   renderFrame() {
@@ -65,9 +77,7 @@ class Viewer {
     return this._objContainer;
   }
 
-  drawObject(config) {
-    const obj = this._makeEmojiSprite(config.look);
-
+  drawObject(obj) {
     obj.position.set(
       getRandomInt(-RANGE_X, RANGE_X),
       getRandomFloat(0, RANGE_Y),
@@ -77,36 +87,6 @@ class Viewer {
     this._objContainer.add(obj);
 
     return obj.uuid;
-  }
-
-  _makeEmojiSprite(look, emojiTextureSize = 100) {
-    const emojiCanvas = document.createElement('canvas');
-
-    emojiCanvas.width = emojiTextureSize;
-    emojiCanvas.height = emojiTextureSize;
-
-    const fontFace = 'Arial';
-    const fontSize = emojiTextureSize * 0.75;
-
-    const context = emojiCanvas.getContext("2d");
-    context.font = `Bold ${fontSize}px ${fontFace}`;
-    context.lineWidth = 1;
-    context.fillText(look, -2, fontSize - 3);
-
-    const emojiTexture = new THREE.Texture(emojiCanvas);
-    emojiTexture.needsUpdate = true;
-
-    const spriteMaterial = new THREE.SpriteMaterial({
-      map: emojiTexture,
-      transparent: false,
-      alphaTest: 0.5
-    });
-
-    let sprite = new THREE.Sprite(spriteMaterial);
-
-    sprite.scale.set(3, 3, 3);
-
-    return sprite;
   }
 
   removeObject(uuid) {
