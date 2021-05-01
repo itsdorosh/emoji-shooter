@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Authors: Andrii Doroshenko (@itsdorosh) and Kate Fastovets (@katfastovets);
-		Emoji Shooter - small game based on three.js library with support for gamepads.">
+		A minimalistic first-person shooter in which you have to shoot emojis flying at you. 😈 Game has support for gamepads.">
   <title>Emoji Shooter 🔫</title>
   <link rel="stylesheet" href="./main.css">
 </head>
@@ -30,13 +30,14 @@
 <div id="canvasContainer"></div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.js"></script>
-<script src="src/constants.js"></script>
-<script src="src/enemies.js"></script>
+<script src="src/core/constants.js"></script>
+<script src="src/game/constants.js"></script>
+<script src="src/game/enemies.js"></script>
 <script src="src/core/helpers.js"></script>
 <script src="src/core/controls.js"></script>
 <script src="src/core/raycaster.js"></script>
 <script src="src/core/viewer.js"></script>
-<script src="src/engine.js"></script>
+<script src="src/game/engine.js"></script>
 
 <script>
   // containers
@@ -56,6 +57,13 @@
   const gameOverCaption = document.getElementById('gameOverCaption');
 
   const viewer = new Viewer(canvasContainer);
+
+  viewer.init({
+    backgroundColor: BACKGROUND_COLOR,
+    cameraPosition: {x: 0, y: 1, z: DEADLINE + 5},
+    cameraLookAt: {x: 0, y: 2.5, z: 0}
+  });
+
   const controls = new Controls(canvasContainer);
   const raycaster = new Raycaster(viewer.camera);
   const engine = new Engine(viewer, controls, raycaster);

@@ -6,15 +6,14 @@ class Engine {
   _generateEnemiesIntervalId;
   _onGameOverCallback;
   gameEventCallbackMap;
-  __updateEnemiesDefaultAnimationAction = (enemyMeshes) => this.updateExistingEnemiesPosition(enemyMeshes);
-  __handleGamepadButtonsDefaultAnimationAction = () => this.controls.handleGamepadButtons();
+  _updateEnemiesDefaultAnimationAction = (enemyMeshes) => this.updateExistingEnemiesPosition(enemyMeshes);
+  _handleGamepadButtonsDefaultAnimationAction = () => this.controls.handleGamepadButtons();
 
   constructor(viewer, controls, raycaster) {
     this.viewer = viewer;
     this.controls = controls;
     this.raycaster = raycaster;
-
-    this.viewer.addAnimationActions(this.__handleGamepadButtonsDefaultAnimationAction);
+    this.viewer.addAnimationActions(this._handleGamepadButtonsDefaultAnimationAction);
 
     this.gameEventCallbackMap = {
       'shot': ({clientX, clientY}) => this.onShot({x: clientX, y: clientY}),
@@ -44,8 +43,13 @@ class Engine {
   generateEnemies() {
     if (this.existingEnemies.length < MAX_COUNT_OF_ENEMIES_AT_MOMENT) {
       const enemyConfig = enemies[Math.floor((enemies.length) * Math.random())];
-      const enemyObj = this._makeEmojiSprite(enemyConfig.look);
-      const enemyId = this.viewer.drawObject(enemyObj);
+      const enemyCanvas = this._makeEmojiCanvas(enemyConfig.look);
+      const enemyId = this.viewer.drawObject({
+        type: "SPRITE",
+        data: enemyCanvas,
+        position: {x: getRandomInt(-RANGE_X, RANGE_X), y: getRandomFloat(0, RANGE_Y), z: -DEADLINE},
+        scale: {x: ENEMY_SIZE, y: ENEMY_SIZE, z: ENEMY_SIZE},
+      });
 
       this.existingEnemies.push({
         id: enemyId,
@@ -65,8 +69,8 @@ class Engine {
 
   play() {
     this.viewer.addAnimationActions(
-      this.__updateEnemiesDefaultAnimationAction,
-      this.__handleGamepadButtonsDefaultAnimationAction
+      this._updateEnemiesDefaultAnimationAction,
+      this._handleGamepadButtonsDefaultAnimationAction
     );
 
     this.viewer.startAnimation();
@@ -129,7 +133,7 @@ class Engine {
     this._onGameOverCallback = callback;
   }
 
-  _makeEmojiSprite(look, emojiTextureSize = 100) {
+  _makeEmojiCanvas(look, emojiTextureSize = 100) {
     const emojiCanvas = document.createElement('canvas');
 
     emojiCanvas.width = emojiTextureSize;
@@ -143,19 +147,6 @@ class Engine {
     context.lineWidth = 1;
     context.fillText(look, -2, fontSize - 3);
 
-    const emojiTexture = new THREE.Texture(emojiCanvas);
-    emojiTexture.needsUpdate = true;
-
-    const spriteMaterial = new THREE.SpriteMaterial({
-      map: emojiTexture,
-      transparent: false,
-      alphaTest: 0.5
-    });
-
-    let sprite = new THREE.Sprite(spriteMaterial);
-
-    sprite.scale.set(3, 3, 3);
-
-    return sprite;
+    return emojiCanvas;
   }
 }

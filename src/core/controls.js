@@ -84,6 +84,7 @@ class Controls {
   on(eventName, callback) {
     if (!(eventName in this.eventStorage)) {
       this.eventStorage[eventName] = callback;
+      return () => this.unsubscribe(eventName);
     } else {
       throw 'callback for this eventName already exists';
     }

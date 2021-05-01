@@ -12,7 +12,11 @@ const enemies = [
     value: 7,
   },
   {
-    look: `👻`,
+    look: `👹`,
     value: 9,
+  },
+  {
+    look: `👽`,
+    value: 12,
   },
 ];

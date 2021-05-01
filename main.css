@@ -33,8 +33,7 @@ button {
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  /*rebeccapurple*/
-  background: rgba(102, 51, 153, 0.6);
+  background: rgba(145, 199, 136, 0.6);
 }
 
 #playButton,
@@ -55,7 +54,7 @@ button {
   align-items: center;
   justify-content: space-around;
   flex-direction: row;
-  background: rgba(102, 51, 153, 0.6);
+  background: rgba(82, 115, 77, 0.6);
 }
 
 #generalButtons {

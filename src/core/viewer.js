@@ -8,29 +8,36 @@ class Viewer {
   constructor(HTMLContainer) {
     this.HTMLContainer = HTMLContainer;
     this._objContainer = new THREE.Object3D();
-
-    this.init();
   }
 
-  init() {
+  init(initialisationParams = {backgroundColor: "", cameraPosition: {x: 1, y: 1, z: 1}, cameraLookAt: {x: 0, y: 0, z: 0}}) {
     const {offsetWidth, offsetHeight} = this.HTMLContainer;
     this.scene = new THREE.Scene();
     this.camera = new THREE.PerspectiveCamera(70, offsetWidth / offsetHeight, 0.1, 1000);
-    this.camera.position.set(0, 1, DEADLINE + 5);
-    this.camera.lookAt(0, 2.5, 0);
+
+    // noinspection JSCheckFunctionSignatures
+    this.camera.position.set(
+      initialisationParams.cameraPosition.x,
+      initialisationParams.cameraPosition.y,
+      initialisationParams.cameraPosition.z,
+    );
+
+    this.camera.lookAt(
+      initialisationParams.cameraLookAt.x,
+      initialisationParams.cameraLookAt.y,
+      initialisationParams.cameraLookAt.z,
+    );
+
     this.renderer = new THREE.WebGLRenderer({antialias: true});
     this.renderer.setSize(offsetWidth, offsetHeight);
-    this.renderer.setClearColor('#ffc0cb');
+    this.renderer.setClearColor(initialisationParams.backgroundColor);
     this.HTMLContainer.appendChild(this.renderer.domElement);
     this.scene.add(this._objContainer);
-
     const grid = new THREE.GridHelper(100, 20, 0x000000, 0x000000);
     grid.material.opacity = 0.2;
     grid.material.transparent = true;
     this.scene.add(grid);
-
     this.renderFrame();
-
     window.addEventListener('resize', this.onWindowResize);
   }
 
@@ -47,6 +54,7 @@ class Viewer {
       if (this._animationActions.length) {
         this._animationActions.forEach(animationAction => animationAction(this._objContainer.children));
       }
+
       this.renderFrame();
       this._isAnimationPerforming && this.performAnimation();
     });
@@ -77,15 +85,33 @@ class Viewer {
     return this._objContainer;
   }
 
-  drawObject(obj) {
-    obj.position.set(
-      getRandomInt(-RANGE_X, RANGE_X),
-      getRandomFloat(0, RANGE_Y),
-      -DEADLINE
-    );
+  drawObject(creationParams = {type: '', position: {x: 0, y: 0, z: 0}, scale: {x: 1, y: 1, z: 1}, data: null}) {
+    let obj;
+
+    switch (creationParams.type) {
+      case "SPRITE": {
+        const spriteTexture = new THREE.Texture(creationParams.data);
+        spriteTexture.needsUpdate = true;
+
+        const spriteMaterial = new THREE.SpriteMaterial({
+          map: spriteTexture,
+          transparent: false,
+          alphaTest: 0.5
+        });
+
+        obj = new THREE.Sprite(spriteMaterial);
+        break;
+      }
+
+      default: {
+        throw new Error("Not implemented");
+      }
+    }
+
+    obj.position.set(creationParams.position.x, creationParams.position.y, creationParams.position.z);
+    obj.scale.set(creationParams.scale.x, creationParams.scale.y, creationParams.scale.z);
 
     this._objContainer.add(obj);
-
     return obj.uuid;
   }
 
