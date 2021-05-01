@@ -1,126 +1,122 @@
 class Viewer {
 
-	_objContainer;
-	_animationFrameId;
-	_animationActions = [];
+  _objContainer;
+  _animationFrameId;
+  _animationActions = [];
 
-	constructor(HTMLContainer) {
-		this.HTMLContainer = HTMLContainer;
-		this._objContainer = new THREE.Object3D();
+  constructor(HTMLContainer) {
+    this.HTMLContainer = HTMLContainer;
+    this._objContainer = new THREE.Object3D();
 
-		this.init();
-	}
+    this.init();
+  }
 
-	init() {
-		const { offsetWidth, offsetHeight } = this.HTMLContainer;
-		this.scene = new THREE.Scene();
-		this.camera = new THREE.PerspectiveCamera(70, offsetWidth / offsetHeight, 0.1, 1000);
-		this.camera.position.set(0, 1, DEADLINE + 5);
-		this.camera.lookAt(0, 2.5, 0);
-		this.renderer = new THREE.WebGLRenderer({ antialias: true });
-		this.renderer.setSize(offsetWidth, offsetHeight);
-		this.renderer.setClearColor('#ffc0cb');
-		this.HTMLContainer.appendChild(this.renderer.domElement);
-		this.scene.add(this._objContainer);
+  init() {
+    const {offsetWidth, offsetHeight} = this.HTMLContainer;
+    this.scene = new THREE.Scene();
+    this.camera = new THREE.PerspectiveCamera(70, offsetWidth / offsetHeight, 0.1, 1000);
+    this.camera.position.set(0, 1, DEADLINE + 5);
+    this.camera.lookAt(0, 2.5, 0);
+    this.renderer = new THREE.WebGLRenderer({antialias: true});
+    this.renderer.setSize(offsetWidth, offsetHeight);
+    this.renderer.setClearColor('#ffc0cb');
+    this.HTMLContainer.appendChild(this.renderer.domElement);
+    this.scene.add(this._objContainer);
 
-		const grid = new THREE.GridHelper( 100, 20, 0x000000, 0x000000 );
-		grid.material.opacity = 0.2;
-		grid.material.transparent = true;
-		this.scene.add( grid );
+    const grid = new THREE.GridHelper(100, 20, 0x000000, 0x000000);
+    grid.material.opacity = 0.2;
+    grid.material.transparent = true;
+    this.scene.add(grid);
 
-		this.animate();
+    this.animate();
 
-		window.addEventListener('resize', this.onWindowResize);
-	}
+    window.addEventListener('resize', this.onWindowResize);
+  }
 
-	addAnimationActions(...callbacks) {
-		this._animationActions.push(...callbacks);
-	}
+  addAnimationActions(...callbacks) {
+    this._animationActions.push(...callbacks);
+  }
 
-	clearAnimationActions() {
-		this._animationActions.length = 0;
-	}
+  clearAnimationActions() {
+    this._animationActions.length = 0;
+  }
 
-	animate() {
-		this.__animationFrameId = requestAnimationFrame(() => {
-			if (this._animationActions.length) {
-				this._animationActions.forEach(animationAction => animationAction(this._objContainer.children));
-			}
-			this.renderFrame();
-			this.animate();
-		});
-	}
+  animate() {
+    this.__animationFrameId = requestAnimationFrame(() => {
+      if (this._animationActions.length) {
+        this._animationActions.forEach(animationAction => animationAction(this._objContainer.children));
+      }
+      this.renderFrame();
+      this.animate();
+    });
+  }
 
-	onWindowResize = () => {
-		this.camera.aspect = this.HTMLContainer.offsetWidth / this.HTMLContainer.offsetHeight;
-		this.camera.updateProjectionMatrix();
-		this.renderer.setSize(this.HTMLContainer.offsetWidth, this.HTMLContainer.offsetHeight);
-	}
+  onWindowResize = () => {
+    this.camera.aspect = this.HTMLContainer.offsetWidth / this.HTMLContainer.offsetHeight;
+    this.camera.updateProjectionMatrix();
+    this.renderer.setSize(this.HTMLContainer.offsetWidth, this.HTMLContainer.offsetHeight);
+  }
 
-	renderFrame() {
-		this.renderer.render(this.scene, this.camera);
-	}
+  renderFrame() {
+    this.renderer.render(this.scene, this.camera);
+  }
 
-	get objContainer() {
-		return this._objContainer;
-	}
+  get objContainer() {
+    return this._objContainer;
+  }
 
-	/**
-	 * @method drawObject
-	 * @param config - {object with params like: type: 'text', content: 'text', }
-	 */
-	drawObject(config) {
-		const obj = this._makeEmojiSprite(config.look);
+  drawObject(config) {
+    const obj = this._makeEmojiSprite(config.look);
 
-		obj.position.set(
-			getRandomInt(-RANGE_X, RANGE_X),
-			getRandomFloat(0, RANGE_Y),
-			-DEADLINE
-		);
+    obj.position.set(
+      getRandomInt(-RANGE_X, RANGE_X),
+      getRandomFloat(0, RANGE_Y),
+      -DEADLINE
+    );
 
-		this._objContainer.add(obj);
+    this._objContainer.add(obj);
 
-		return obj.uuid;
-	}
+    return obj.uuid;
+  }
 
-	_makeEmojiSprite(look, emojiTextureSize = 100) {
-		const emojiCanvas = document.createElement('canvas');
+  _makeEmojiSprite(look, emojiTextureSize = 100) {
+    const emojiCanvas = document.createElement('canvas');
 
-		emojiCanvas.width = emojiTextureSize;
-		emojiCanvas.height = emojiTextureSize;
+    emojiCanvas.width = emojiTextureSize;
+    emojiCanvas.height = emojiTextureSize;
 
-		const fontFace = 'Arial';
-		const fontSize = emojiTextureSize * 0.75;
+    const fontFace = 'Arial';
+    const fontSize = emojiTextureSize * 0.75;
 
-		const context = emojiCanvas.getContext("2d");
-		context.font = `Bold ${fontSize}px ${fontFace}`;
-		context.lineWidth = 1;
-		context.fillText(look, -2, fontSize - 3);
+    const context = emojiCanvas.getContext("2d");
+    context.font = `Bold ${fontSize}px ${fontFace}`;
+    context.lineWidth = 1;
+    context.fillText(look, -2, fontSize - 3);
 
-		const emojiTexture = new THREE.Texture(emojiCanvas);
-		emojiTexture.needsUpdate = true;
+    const emojiTexture = new THREE.Texture(emojiCanvas);
+    emojiTexture.needsUpdate = true;
 
-		const spriteMaterial = new THREE.SpriteMaterial({
-			map: emojiTexture,
-			transparent: false,
-			alphaTest: 0.5
-		});
+    const spriteMaterial = new THREE.SpriteMaterial({
+      map: emojiTexture,
+      transparent: false,
+      alphaTest: 0.5
+    });
 
-		let sprite = new THREE.Sprite(spriteMaterial);
+    let sprite = new THREE.Sprite(spriteMaterial);
 
-		sprite.scale.set(3, 3, 3);
+    sprite.scale.set(3, 3, 3);
 
-		return sprite;
-	}
+    return sprite;
+  }
 
-	removeObject(uuid) {
-		const objForRemove = this._objContainer.getObjectByProperty('uuid', uuid);
-		this._objContainer.remove(objForRemove);
-	}
+  removeObject(uuid) {
+    const objForRemove = this._objContainer.getObjectByProperty('uuid', uuid);
+    this._objContainer.remove(objForRemove);
+  }
 
-	removeAllObjects() {
-		while(this._objContainer.children.length > 0){
-			this._objContainer.remove(this._objContainer.children[0]);
-		}
-	}
+  removeAllObjects() {
+    while (this._objContainer.children.length > 0) {
+      this._objContainer.remove(this._objContainer.children[0]);
+    }
+  }
 }
