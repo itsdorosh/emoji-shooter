@@ -1,4 +1,4 @@
-class Raycaster {
+export class Raycaster {
   _onIntersectionCallback;
 
   constructor(camera) {

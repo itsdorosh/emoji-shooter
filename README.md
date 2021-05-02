@@ -10,7 +10,7 @@ A minimalistic first-person shooter in which you have to shoot emojis flying at 
 
 ## Structure
 
-### index.js (ui)
+### main.js (ui)
 
 The upper level of the architecture, contains the initialization and launch code
 as well as for managing various states of the ui part (buttons, labels, etc.).

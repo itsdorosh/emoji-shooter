@@ -20,6 +20,9 @@ button {
   border-radius: 10px;
   border: none;
   font-family: inherit;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 #canvasContainer {
@@ -34,13 +37,6 @@ button {
   justify-content: center;
   flex-direction: column;
   background: rgba(145, 199, 136, 0.6);
-}
-
-#playButton,
-#restartButton {
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
 #gameButtons button {
@@ -79,6 +75,6 @@ button {
   position: absolute;
 }
 
-.hide {
+.hidden {
   display: none !important;
 }

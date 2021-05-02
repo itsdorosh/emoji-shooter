@@ -1,24 +1,34 @@
-function getRandomInt(min, max) {
+export function getRandomInt(min, max) {
   min = Math.ceil(min);
   max = Math.floor(max);
   return Math.floor(Math.random() * (max - min + 1) + min);
 }
 
-function getRandomFloat(min, max) {
+export function getRandomFloat(min, max) {
   return Math.random() * (max - min) + min;
 }
 
-function hide(...elements) {
-  elements.forEach(element => element.classList.add('hide'));
+export function hide(...elements) {
+  elements.forEach(element => element.classList.add('hidden'));
 }
 
-function show(...elements) {
-  elements.forEach(element => element.classList.remove('hide'));
+export function show(...elements) {
+  elements.forEach(element => element.classList.remove('hidden'));
 }
 
-function convertCoordinatesToPixels(width, height, x = 0, y = 0) {
+export function convertCoordinatesToPixels(width, height, x = 0, y = 0) {
   return {
     x: ((width / 2) + ((width / 2) * x)),
     y: ((height / 2) + ((height / 2) * y)),
   };
+}
+
+export function toggleFullScreen() {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen().then(_ => {});
+  } else {
+    if (document.exitFullscreen) {
+      document.exitFullscreen().then(_ => {});
+    }
+  }
 }

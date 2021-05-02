@@ -4,138 +4,34 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Authors: Andrii Doroshenko (@itsdorosh) and Kate Fastovets (@katfastovets);
-		A minimalistic first-person shooter in which you have to shoot emojis flying at you. 😈 Game has support for gamepads.">
-  <title>Emoji Shooter 🔫</title>
+    A minimalistic first-person shooter in which you have to shoot emojis flying at you. 😈
+    Game has support for gamepads.">
+  <title>Emoji Shooter</title>
+  <link rel="icon" href="assets/favicon.ico" type="image/x-icon" />
   <link rel="stylesheet" href="./main.css">
 </head>
 <body>
-<div id="inGameButtons" class="position-absolute hide">
+<div id="inGameButtons" class="position-absolute hidden">
   <p id="pointsCount">Count: 0</p>
   <button id="pauseButton">Pause ⏸</button>
 </div>
 
 <div id="gameButtons" class="position-absolute">
   <h1 id="greetingCaption">Emoji Shooter 🔫</h1>
-  <h1 id="gameOverCaption" class="hide">GAME OVER</h1>
+  <h1 id="gameOverCaption" class="hidden">GAME OVER</h1>
   <button id="playButton">Play ▶️</button>
-  <button id="restartButton" class="hide">Restart 🔄</button>
+  <button id="restartButton" class="hidden">Restart 🔄</button>
 </div>
 
 <div id="generalButtons" class="position-absolute">
-  <span id="fullscreenMode" onclick="toggleFullScreen()">📺️</span>
-  <span id="gamepad" class="hide">🎮</span>
-  <span id="mouse" class="hide">🖱</span>
+  <span id="fullscreen">📺️</span>
+  <span id="gamepad" class="hidden">🎮</span>
+  <span id="mouse" class="hidden">🖱</span>
 </div>
 
 <div id="canvasContainer"></div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.js"></script>
-<script src="src/core/constants.js"></script>
-<script src="src/game/constants.js"></script>
-<script src="src/game/enemies.js"></script>
-<script src="src/core/helpers.js"></script>
-<script src="src/core/controls.js"></script>
-<script src="src/core/raycaster.js"></script>
-<script src="src/core/viewer.js"></script>
-<script src="src/game/engine.js"></script>
-
-<script>
-  // containers
-  const canvasContainer = document.getElementById('canvasContainer');
-  const inGameButtons = document.getElementById('inGameButtons');
-  const gameButtons = document.getElementById('gameButtons');
-
-  // buttons
-  const playButton = document.getElementById('playButton');
-  const pauseButton = document.getElementById('pauseButton');
-  const restartButton = document.getElementById('restartButton');
-  const gamepadButton = document.getElementById('gamepad');
-  const mouseButton = document.getElementById('mouse');
-
-  // captions
-  const greetingCaption = document.getElementById('greetingCaption');
-  const gameOverCaption = document.getElementById('gameOverCaption');
-
-  const viewer = new Viewer(canvasContainer);
-
-  viewer.init({
-    backgroundColor: BACKGROUND_COLOR,
-    cameraPosition: {x: 0, y: 1, z: DEADLINE + 5},
-    cameraLookAt: {x: 0, y: 2.5, z: 0}
-  });
-
-  const controls = new Controls(canvasContainer);
-  const raycaster = new Raycaster(viewer.camera);
-  const engine = new Engine(viewer, controls, raycaster);
-
-  engine.onPointCountUpdate((count) => {
-    document.getElementById('pointsCount').innerText = `Count: ${count}`;
-  });
-
-  engine.onGameOver(() => {
-    hide(greetingCaption, playButton);
-    show(gameButtons, gameOverCaption, restartButton);
-  });
-
-  playButton.addEventListener('click', () => {
-    hide(gameButtons);
-    show(inGameButtons);
-    engine.play();
-  });
-
-  pauseButton.addEventListener('click', () => {
-    show(gameButtons, restartButton, playButton);
-    engine.pause();
-  });
-
-  restartButton.addEventListener('click', () => {
-    hide(gameOverCaption, gameButtons);
-    show(greetingCaption);
-    engine.restart();
-  });
-
-  gamepadButton.addEventListener('click', () => controls.switchControlsMode(CONTROLS_MODES.GAMEPAD_MODE));
-
-  mouseButton.addEventListener('click', () => controls.switchControlsMode(CONTROLS_MODES.MOUSE_MODE));
-
-  controls.on('gamepadconnected', () => {
-    controls.switchControlsMode(CONTROLS_MODES.MOUSE_MODE);
-  });
-
-  controls.on('gamepaddisconnected', () => {
-    controls.switchControlsMode(CONTROLS_MODES.NO_MODE);
-  });
-
-  controls.on('controlsModeSwitched', (mode) => {
-    switch (mode) {
-      case CONTROLS_MODES.MOUSE_MODE: {
-        hide(mouseButton);
-        show(gamepadButton);
-        break;
-      }
-
-      case CONTROLS_MODES.GAMEPAD_MODE: {
-        hide(gamepadButton);
-        show(mouseButton);
-        break;
-      }
-
-      case CONTROLS_MODES.NO_MODE: {
-        hide(mouseButton, gamepadButton);
-        break;
-      }
-    }
-  });
-
-  function toggleFullScreen() {
-    if (!document.fullscreenElement) {
-      document.documentElement.requestFullscreen();
-    } else {
-      if (document.exitFullscreen) {
-        document.exitFullscreen();
-      }
-    }
-  }
-</script>
+<script type="module" src="src/main.js"></script>
 </body>
 </html>

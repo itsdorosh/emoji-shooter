@@ -1,4 +1,14 @@
-class Engine {
+import {GAME_EVENT_MAP, getRandomFloat, getRandomInt} from "../core";
+import {
+  DEADLINE,
+  ENEMY_SIZE,
+  GENERATE_ENEMIES_INTERVAL_TIME,
+  MAX_COUNT_OF_ENEMIES_AT_MOMENT,
+  RANGE_X, RANGE_Y
+} from "./constants.js";
+import {ENEMIES} from "./enemies.js";
+
+export class Engine {
 
   _pointCount = 0;
   existingEnemies = [];
@@ -42,7 +52,7 @@ class Engine {
 
   generateEnemies() {
     if (this.existingEnemies.length < MAX_COUNT_OF_ENEMIES_AT_MOMENT) {
-      const enemyConfig = enemies[Math.floor((enemies.length) * Math.random())];
+      const enemyConfig = ENEMIES[Math.floor((ENEMIES.length) * Math.random())];
       const enemyCanvas = this._makeEmojiCanvas(enemyConfig.look);
       const enemyId = this.viewer.drawObject({
         type: "SPRITE",

@@ -1,4 +1,7 @@
-class Controls {
+import {AVAILABLE_DOM_EVENTS, CONTROLS_MODES} from "./constants.js";
+import {convertCoordinatesToPixels, hide, show} from "./helpers.js";
+
+export class Controls {
 
   constructor(rootObject = document.body) {
     this.eventStorage = {};

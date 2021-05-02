@@ -1,4 +1,4 @@
-const enemies = [
+export const ENEMIES = [
   {
     look: `💩`,
     value: 3,
