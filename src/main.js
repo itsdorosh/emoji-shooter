@@ -1,16 +1,11 @@
 // noinspection ES6PreferShortImport
-import {Engine, BACKGROUND_COLOR, DEADLINE} from './game/index.js';
+import {Engine, DEFAULT_VIEWER_SETTINGS} from './game/index.js';
 // noinspection ES6PreferShortImport
 import {Controls, CONTROLS_MODES, UiMagicTrick, Raycaster, toggleFullScreen, Viewer} from './core/index.js';
 
 const canvasContainer = document.getElementById('canvasContainer');
 const viewer = new Viewer(canvasContainer);
-
-viewer.init({
-  backgroundColor: BACKGROUND_COLOR,
-  cameraPosition: {x: 0, y: 1, z: DEADLINE + 5},
-  cameraLookAt: {x: 0, y: 2.5, z: 0}
-});
+viewer.init(DEFAULT_VIEWER_SETTINGS);
 
 const controls = new Controls(canvasContainer);
 const raycaster = new Raycaster(viewer.camera);
