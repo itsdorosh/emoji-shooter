@@ -7,26 +7,26 @@
     A minimalistic first-person shooter in which you have to shoot emojis flying at you. 😈
     Game has support for gamepads.">
   <title>Emoji Shooter</title>
-  <link rel="icon" href="assets/favicon.ico" type="image/x-icon" />
+  <link rel="icon" href="assets/favicon.ico" type="image/x-icon"/>
   <link rel="stylesheet" href="./main.css">
 </head>
 <body>
-<div id="inGameButtons" class="position-absolute hidden">
+<div id="headerContainer" class="position-absolute">
   <p id="pointsCount">Count: 0</p>
   <button id="pauseButton">Pause ⏸</button>
 </div>
 
-<div id="gameButtons" class="position-absolute">
+<div id="menuContainer" class="position-absolute">
   <h1 id="greetingCaption">Emoji Shooter 🔫</h1>
   <h1 id="gameOverCaption" class="hidden">GAME OVER</h1>
   <button id="playButton">Play ▶️</button>
   <button id="restartButton" class="hidden">Restart 🔄</button>
 </div>
 
-<div id="generalButtons" class="position-absolute">
-  <span id="fullscreen">📺️</span>
-  <span id="gamepad" class="hidden">🎮</span>
-  <span id="mouse" class="hidden">🖱</span>
+<div id="toolbarContainer" class="position-absolute">
+  <button id="gamepad">🎮</button>
+  <button id="mouse">🖱</button>
+  <button id="fullscreen">📺️</button>
 </div>
 
 <div id="canvasContainer"></div>

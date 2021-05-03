@@ -8,14 +8,6 @@ export function getRandomFloat(min, max) {
   return Math.random() * (max - min) + min;
 }
 
-export function hide(...elements) {
-  elements.forEach(element => element.classList.add('hidden'));
-}
-
-export function show(...elements) {
-  elements.forEach(element => element.classList.remove('hidden'));
-}
-
 export function convertCoordinatesToPixels(width, height, x = 0, y = 0) {
   return {
     x: ((width / 2) + ((width / 2) * x)),

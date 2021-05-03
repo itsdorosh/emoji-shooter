@@ -1,5 +1,6 @@
 import {AVAILABLE_DOM_EVENTS, CONTROLS_MODES} from "./constants.js";
-import {convertCoordinatesToPixels, hide, show} from "./helpers.js";
+import {convertCoordinatesToPixels} from "./helpers.js";
+import {UiMagicTrick} from "./ui-magic-trick.js";
 
 export class Controls {
 
@@ -11,7 +12,7 @@ export class Controls {
     this.aim = document.createElement('p');
     this.aim.innerText = '+';
     this.aim.classList.add('aim', 'position-absolute');
-    hide(this.aim);
+    UiMagicTrick.hide(this.aim);
     this.rootObject.appendChild(this.aim);
 
     this.init();
@@ -43,11 +44,11 @@ export class Controls {
 
   handleSwitchControlsMode(mode) {
     if (mode === CONTROLS_MODES.GAMEPAD_MODE) {
-      show(this.aim);
+      UiMagicTrick.show(this.aim);
       this.aim.style.marginLeft = `-${39.59 / 2}px`;
       this.moveAimToCoordinates(0, 0);
     } else if (mode === CONTROLS_MODES.MOUSE_MODE || mode === CONTROLS_MODES.NO_MODE) {
-      hide(this.aim);
+      UiMagicTrick.hide(this.aim);
     }
   }
 

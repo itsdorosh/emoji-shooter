@@ -7,15 +7,16 @@ body {
 body {
   margin: 0;
   font-family: monospace;
-  -webkit-touch-callout: none; /* iOS Safari */
-  -webkit-user-select: none; /* Safari */
-  -moz-user-select: none; /* Firefox */
-  -ms-user-select: none; /* Internet Explorer/Edge */
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
   user-select: none;
   overflow: hidden;
 }
 
 button {
+  width: 160px;
   padding: 10px 20px;
   border-radius: 10px;
   border: none;
@@ -29,21 +30,7 @@ button {
   height: 100%;
 }
 
-#gameButtons {
-  width: 100vw;
-  height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  background: rgba(145, 199, 136, 0.6);
-}
-
-#gameButtons button {
-  margin-bottom: 10px;
-}
-
-#inGameButtons {
+#headerContainer {
   width: 100vw;
   height: 10vh;
   display: flex;
@@ -53,14 +40,29 @@ button {
   background: rgba(82, 115, 77, 0.6);
 }
 
-#generalButtons {
+#menuContainer {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  background: rgba(145, 199, 136, 0.6);
+}
+
+#menuContainer button {
+  margin-bottom: 10px;
+}
+
+#toolbarContainer {
   display: flex;
   right: 10px;
   bottom: 10px;
   font-size: 24px;
 }
 
-#generalButtons span {
+#toolbarContainer button {
+  width: 40px;
   margin-left: 15px;
 }
 
