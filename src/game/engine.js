@@ -1,4 +1,5 @@
-import {GAME_EVENT_MAP, getRandomFloat, getRandomInt} from "../core";
+// noinspection ES6PreferShortImport
+import {GAME_EVENT_MAP, getRandomFloat, getRandomInt} from "../core/index.js";
 import {
   DEADLINE,
   ENEMY_SIZE,
@@ -143,7 +144,7 @@ export class Engine {
     this._onGameOverCallback = callback;
   }
 
-  _makeEmojiCanvas(look, emojiTextureSize = 100) {
+  _makeEmojiCanvas(look, emojiTextureSize = 128) {
     const emojiCanvas = document.createElement('canvas');
 
     emojiCanvas.width = emojiTextureSize;

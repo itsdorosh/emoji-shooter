@@ -1,5 +1,7 @@
-import {Engine, BACKGROUND_COLOR, DEADLINE} from './game';
-import {Controls, CONTROLS_MODES, UiMagicTrick, Raycaster, toggleFullScreen, Viewer} from './core';
+// noinspection ES6PreferShortImport
+import {Engine, BACKGROUND_COLOR, DEADLINE} from './game/index.js';
+// noinspection ES6PreferShortImport
+import {Controls, CONTROLS_MODES, UiMagicTrick, Raycaster, toggleFullScreen, Viewer} from './core/index.js';
 
 const canvasContainer = document.getElementById('canvasContainer');
 const viewer = new Viewer(canvasContainer);
@@ -28,24 +30,31 @@ UiMagicTrick.registerElements([
   {id: 'greetingCaption', visible: true},
   {id: 'playButton', visible: true, onclick: () => { UiMagicTrick.switchState('play'); engine.play(); }},
   {id: 'pauseButton', visible: true, onclick: () => { UiMagicTrick.switchState('pause'); engine.pause(); }},
-  {id: 'restartButton', onclick: () => { UiMagicTrick.switchState('restart'); engine.restart(); }},
+  {id: 'restartButton', visible: false, onclick: () => { UiMagicTrick.switchState('play'); engine.restart(); }},
   {id: 'fullscreen', visible: true, onclick: () => toggleFullScreen()},
   {id: 'gamepad', visible: false, onclick: () => controls.switchControlsMode(CONTROLS_MODES.GAMEPAD_MODE)},
   {id: 'mouse', visible: false, onclick: () => controls.switchControlsMode(CONTROLS_MODES.MOUSE_MODE)},
 ]);
 
-UiMagicTrick.createState('play', {headerContainer: true, menuContainer: false});
-UiMagicTrick.createState('pause', {gameOverCaption: false, restartButton: true, playButton: true, menuContainer: true});
-UiMagicTrick.createState('restart', {gameOverCaption: false, greetingCaption: true, menuContainer: false});
+UiMagicTrick.createState('pause', {menuContainer: true});
 UiMagicTrick.createState(CONTROLS_MODES.MOUSE_MODE, {mouseButton: false, gamepadButton: true});
 UiMagicTrick.createState(CONTROLS_MODES.GAMEPAD_MODE, {mouseButton: true, gamepadButton: false});
 UiMagicTrick.createState(CONTROLS_MODES.NO_MODE, {mouseButton: false, gamepadButton: false});
 
+UiMagicTrick.createState('play', {
+  gameOverCaption: false,
+  greetingCaption: true,
+  playButton: true,
+  restartButton: true,
+  headerContainer: true,
+  menuContainer: false
+});
+
 UiMagicTrick.createState('gameOver', {
+  gameOverCaption: true,
   greetingCaption: false,
   playButton: false,
-  menuContainer: true,
-  gameOverCaption: true,
   restartButton: true,
+  menuContainer: true,
   headerContainer: false
 });

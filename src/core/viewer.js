@@ -13,7 +13,7 @@ export class Viewer {
   init(initialisationParams = {backgroundColor: "", cameraPosition: {x: 1, y: 1, z: 1}, cameraLookAt: {x: 0, y: 0, z: 0}}) {
     const {offsetWidth, offsetHeight} = this.HTMLContainer;
     this.scene = new THREE.Scene();
-    this.camera = new THREE.PerspectiveCamera(80, offsetWidth / offsetHeight, 0.1, 1000);
+    this.camera = new THREE.PerspectiveCamera(70, offsetWidth / offsetHeight, 0.1, 1000);
 
     // noinspection JSCheckFunctionSignatures
     this.camera.position.set(

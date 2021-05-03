@@ -4,6 +4,10 @@ body {
   height: 100%
 }
 
+h1 {
+  font-size: 60px;
+}
+
 body {
   margin: 0;
   font-family: monospace;
@@ -47,7 +51,7 @@ button {
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  background: rgba(145, 199, 136, 0.6);
+  background: rgba(145, 199, 136, 0.75);
 }
 
 #menuContainer button {
