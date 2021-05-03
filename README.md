@@ -1,30 +1,53 @@
 # emoji-shooter
-игра, в которой нужно отстреливать различные летающие эмоджи 😈
 
-![pic](./preview.png)
+A minimalistic first-person shooter in which you have to shoot emojis flying at you. 😈
 
-собственно, приложение имеет максимально простую структуру:
+> ℹ️ Based on the classic webdev stack (html/css/js) and three.js library.
 
-viewer.js - отвечает за сцену, это api, которое предоставляет для всех пользователей этой зависимости следующее:
-- рисовать
-- управлять камерой
-- светом
-- рейкастером
+![pic](assets/emoji-shooter-preview.png)
 
-engine.js - отвечает за логику игры:
-- создание объектов
-- выстрелы
-- уничтожение объектов при попадании
-- звуки
-- набор очков
-- проигрыш
-- старт-паузу-стоп.
+---
 
-этот слой принимает сигналы с контролов и посылает сигналы во вьювер.
+## Structure
 
-controls.js - слой, который слушает пользовательские события и имеет событийную систему. создан для того, чтобы игровая логика, помещённая в engine могла тригерить реакции на действия пользователя.
+### main.js (ui)
 
-raycaster.js - по сути промежуточный слой между контролами и движком, имеет api для выборки объектов по координатам, имеет фильтрацию по типам объектов, может искать в каком-то конкретном пространстве (по дефолту сцена).
+The upper level of the architecture, contains the initialization and launch code
+as well as for managing various states of the ui part (buttons, labels, etc.).
 
-Детальнее на схеме:
-![pic](./schema.png)
+### engine.js
+
+Responsible for the game logic:
+
+- creating enemies
+- firing shots
+- destruction of enemies on hit
+- calculation of points for hits
+- game over conditions
+- game control: start-pause-stop
+
+This layer receives events from controls and call methods of the viewer.
+
+### controls.js
+
+A layer that listens events from the different input sources and has an event system.
+
+### viewer.js
+
+API for working with the 3D part of the system:
+
+- creating and deleting objects
+- camera movement control
+- lighting control on scene
+
+### raycaster.js
+
+API for selecting objects by coordinates, has filtering by object types,
+can search in a specific space (scene by default).
+
+---
+
+## Schema
+
+See the schema for more details:
+![pic](./assets/emoji-shooter-schema.png)
